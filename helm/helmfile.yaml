@@ -16,6 +16,8 @@ releases:
     namespace: longhorn-system
     chart: longhorn/longhorn
     version: 1.7.1
+    values:
+      - ./values/longhorn.values.yaml
 
   # Load balancer
   - name: metallb
