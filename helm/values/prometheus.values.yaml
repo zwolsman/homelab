@@ -1,0 +1,12 @@
+grafana:
+  ingress:
+    enabled: true
+    hosts:
+      - "grafana.home"
+  persistence:
+    enabled: true
+    type: sts
+    storageClassName: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 5Gi

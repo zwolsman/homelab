@@ -9,6 +9,8 @@ repositories:
     url: https://kubernetes.github.io/ingress-nginx
   - name: bitnami
     url: https://charts.bitnami.com/bitnami
+  - name: prometheus-community
+    url: https://prometheus-community.github.io/helm-charts
 ---
 releases:
   # Distributed storage
@@ -48,3 +50,11 @@ releases:
     version: 8.3.9
     values:
       - ./values/externaldns.values.yaml
+
+  # Monitoring stack
+  - name: prometheus
+    namespace: monitoring
+    chart: prometheus-community/kube-prometheus-stack
+    version: 65.2.0
+    values:
+      - ./values/prometheus.values.yaml
