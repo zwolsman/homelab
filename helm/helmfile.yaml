@@ -13,6 +13,8 @@ repositories:
     url: https://prometheus-community.github.io/helm-charts
   - name: jetstack
     url: https://charts.jetstack.io
+  - name: factorio-server-charts
+    url: https://sqljames.github.io/factorio-server-charts/
 ---
 releases:
   # Distributed storage
@@ -84,3 +86,11 @@ releases:
     version: 6.3.1
     values:
       - ./values/postgresql.exporter.values.yaml
+
+  # Factorio
+  - name: factorio
+    namespace: factorio
+    chart: factorio-server-charts/factorio-server-charts
+    version: 1.2.5
+    values:
+      - ./values/factorio.values.yaml

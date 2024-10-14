@@ -1,0 +1,21 @@
+rcon:
+  external: false
+
+image:
+  tag: "1.1"
+
+persistence:
+  enabled: true
+
+factorioServer:
+  save_name: "soloq"
+
+admin_list:
+  - murfzw
+
+server_settings:
+  name: "Marvs server"
+  description: "Homelab factorio server"
+  visibility:
+    public: false
+  require_user_verification: true
