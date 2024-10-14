@@ -16,3 +16,11 @@ prometheus:
     enabled: true
     hosts:
       - "prometheus.home"
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 50Gi
