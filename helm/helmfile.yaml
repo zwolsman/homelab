@@ -68,3 +68,19 @@ releases:
     version: 1.16.1
     values:
       - ./values/cert-manager.values.yaml
+
+  # PostgreSQL database
+  - name: postgresql
+    namespace: db-system
+    chart: bitnami/postgresql
+    version: 16.0.1
+    values:
+      - ./values/postgresql.values.yaml
+
+  # PostgreSQL database monitoring
+  - name: prometheus-postgres-exporter
+    namespace: db-system
+    chart: prometheus-community/prometheus-postgres-exporter
+    version: 6.3.1
+    values:
+      - ./values/postgresql.exporter.values.yaml

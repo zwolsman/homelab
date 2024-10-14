@@ -1,0 +1,11 @@
+serviceMonitor:
+  enabled: true
+  namespace: db-system
+  labels:
+    release: prometheus
+config:
+  datasource:
+    host: postgresql.db-system.svc.cluster.local
+    passwordSecret:
+      name: postgresql
+      key: postgres-password
