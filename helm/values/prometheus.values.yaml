@@ -10,3 +10,9 @@ grafana:
     accessModes:
       - ReadWriteOnce
     size: 5Gi
+
+prometheus:
+  ingress:
+    enabled: true
+    hosts:
+      - "prometheus.home"
