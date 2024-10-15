@@ -1,5 +1,5 @@
 apiVersion: cert-manager.io/v1
-kind: Issuer
+kind: ClusterIssuer
 metadata:
   name: letsencrypt-staging
   namespace: cert-manager
@@ -16,10 +16,10 @@ spec:
     solvers:
       - http01:
           ingress:
-            ingressClassName: nginx
+            ingressClassName: nginx-internal
 ---
 apiVersion: cert-manager.io/v1
-kind: Issuer
+kind: ClusterIssuer
 metadata:
   name: letsencrypt-prod
   namespace: cert-manager
@@ -36,4 +36,4 @@ spec:
     solvers:
       - http01:
           ingress:
-            ingressClassName: nginx
+            ingressClassName: nginx-internal
