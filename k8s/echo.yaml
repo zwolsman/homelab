@@ -1,0 +1,90 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: echo
+  labels:
+    name: echo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echo-deployment
+  namespace: echo
+  labels:
+    app: echo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echo
+  template:
+    metadata:
+      labels:
+        app: echo
+    spec:
+      containers:
+        - name: echo
+          image: mendhak/http-https-echo:31
+          ports:
+            - containerPort: 8443
+            - containerPort: 8080
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: echo-svc
+  namespace: echo
+spec:
+  type: ClusterIP
+  selector:
+    app: echo
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+    - name: https
+      port: 443
+      targetPort: 8443
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: echo-ingress
+  namespace: echo
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  # annotations:
+  # nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: murfzw.online
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: echo-svc
+                port:
+                  number: 80
+    - host: murfzw.nl
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: echo-svc
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - murfzw.online
+      secretName: murfzw-online-tls
