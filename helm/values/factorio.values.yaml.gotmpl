@@ -1,0 +1,28 @@
+rcon:
+  external: false
+
+image:
+  tag: "2.0.8"
+
+persistence:
+  enabled: true
+
+factorioServer:
+  save_name: "Lets goooooo"
+
+serverPassword:
+  game_password: {{ .Values.factorio.game_password | quote }}
+
+admin_list:
+  - murfzw
+
+server_settings:
+  name: "F&M"
+  description: "To the moooooon"
+  visibility:
+    public: false
+  require_user_verification: true
+  autosave_only_on_server: false
+
+service:
+  type: LoadBalancer
