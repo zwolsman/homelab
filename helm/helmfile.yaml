@@ -1,3 +1,8 @@
+environments:
+  default:
+    secrets:
+      - secrets.yaml
+
 repositories:
   - name: longhorn
     url: https://charts.longhorn.io
@@ -15,6 +20,8 @@ repositories:
     url: https://charts.jetstack.io
   - name: factorio-server-charts
     url: https://sqljames.github.io/factorio-server-charts/
+  - name: tailscale
+    url: https://pkgs.tailscale.com/helmcharts
 ---
 releases:
   # Distributed storage
@@ -94,3 +101,11 @@ releases:
     version: 1.2.5
     values:
       - ./values/factorio.values.yaml
+
+  # Tailscale (VPN)
+  - name: tailscale
+    namespace: tailscale
+    chart: tailscale/tailscale-operator
+    version: 1.76.1
+    values:
+      - ./values/tailscale.values.yaml.gotmpl
