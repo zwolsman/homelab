@@ -1,6 +1,7 @@
 grafana:
   ingress:
     enabled: true
+    ingressClassName: nginx-internal
     hosts:
       - "grafana.home"
   persistence:
@@ -14,6 +15,7 @@ grafana:
 prometheus:
   ingress:
     enabled: true
+    ingressClassName: nginx-internal
     hosts:
       - "prometheus.home"
   prometheusSpec:
