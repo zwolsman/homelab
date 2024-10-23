@@ -84,7 +84,7 @@ releases:
     chart: bitnami/postgresql
     version: 16.0.1
     values:
-      - ./values/postgresql.values.yaml
+      - ./values/postgresql.values.yaml.gotmpl
 
   # PostgreSQL database monitoring
   - name: prometheus-postgres-exporter
