@@ -42,7 +42,7 @@
             modules = [
               # Modules
               disko.nixosModules.disko
-              sops-nix.sops-nix-nixosModules.sops
+              sops-nix.nixosModules.sops
               ./hardware-configuration.nix
               ./disko-configuration.nix
               ./configuration.nix
