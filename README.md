@@ -6,6 +6,22 @@
 - homelab-1 (192.168.1.151)
 - homelab-2 (192.168.1.152)
 
+## Building NixOS flake
+
+As the NixOS flake is in the dir `./nixos` we need to use the `?dir` parameter for the flake and then the flake path. For example:
+
+**Example dir parameter**
+
+```sh
+$ sudo nixos-rebuild switch --flake "github:zwolsman/homelab?dir=nixos#<flake>"
+```
+
+**Working `nixos-rebuild switch` full path**
+
+```sh
+$ sudo nixos-rebuild switch --flake "github:zwolsman/homelab?dir=nixos#homelab-0"
+```
+
 ## Cross-compile with AARCH
 
 Start colima container with rosetta virtualisation
