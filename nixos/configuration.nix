@@ -151,6 +151,17 @@
     };
   };
 
+  services.fail2ban = {
+    enable = true;
+    # Ban IP after 5 failures
+    maxretry = 5;
+    ignoreIP = [
+      # Whitelist k8s and home network subnets
+      "10.0.0.0/8"
+      "192.168.0.0/16"
+    ];
+  };
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ 80 ];
   # networking.firewall.allowedUDPPorts = [ ... ];

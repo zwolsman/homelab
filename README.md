@@ -69,4 +69,9 @@
         <td><a href="https://tailscale.com">Tailscale</a></td>
         <td>VPN without port forwarding</td>
     </tr>
+    <tr>
+    <td><img width="32" src="https://avatars.githubusercontent.com/u/1087378?s=48&v=4"></td>
+        <td><a href="http://www.fail2ban.org/">fail2ban</a></td>
+        <td>Ban hosts that cause multiple authentication errors</td>
+    </tr>
 </table>
