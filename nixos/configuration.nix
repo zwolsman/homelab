@@ -22,6 +22,15 @@
     '';
   };
 
+  # Configure sops secrets
+  sops.defaultSopsFile = ./secrets.yaml;
+  # This will automatically import SSH keys as age keys
+  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+
+  # Secrets used in configuration
+  sops.secrets.tailscale-auth-key = { };
+  sops.secrets.k3s-token = { };
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -61,7 +70,7 @@
   services.k3s = {
     enable = true;
     role = "server";
-    tokenFile = /var/lib/rancher/k3s/server/token;
+    tokenFile = config.sops.secrets.k3s-token.path;
     extraFlags = toString (
       [
         "--write-kubeconfig-mode \"0644\""
@@ -144,12 +153,6 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   networking.firewall.enable = false;
-
-  sops.defaultSopsFile = ./secrets.yaml;
-  # This will automatically import SSH keys as age keys
-  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-
-  sops.secrets.tailscale-auth-key = { };
 
   services.tailscale.enable = true;
 
