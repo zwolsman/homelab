@@ -129,6 +129,7 @@
     git
     jq
     tailscale
+    bat
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -142,11 +143,13 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-  # services.openssh.allowSFTP = false;
-  # services.openssh.settings = {
-  # PasswordAuthentication = false;
-  # };
+  services.openssh = {
+    enable = true;
+    allowSFTP = false;
+    settings = {
+      PasswordAuthentication = false;
+    };
+  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ 80 ];
