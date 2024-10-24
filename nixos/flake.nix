@@ -10,7 +10,7 @@
 
     # Sops
     sops-nix.url = "github:Mic92/sops-nix";
-    sops-nix.input.nixpkgs.follows = "nixpkgs";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
