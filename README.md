@@ -1,79 +1,72 @@
 # Homelab NixOS
 
-# Nodes
+## Nodes
 
 - homelab-0 (192.168.1.150)
 - homelab-1 (192.168.1.151)
 - homelab-2 (192.168.1.152)
 
-## Building NixOS flake
+## Tech stack
 
-As the NixOS flake is in the dir `./nixos` we need to use the `?dir` parameter for the flake and then the flake path. For example:
-
-**Example dir parameter**
-
-```sh
-$ sudo nixos-rebuild switch --flake "github:zwolsman/homelab?dir=nixos#<flake>"
-```
-
-**Working `nixos-rebuild switch` full path**
-
-```sh
-$ sudo nixos-rebuild switch --flake "github:zwolsman/homelab?dir=nixos#homelab-0"
-```
-
-## Cross-compile with AARCH
-
-Start colima container with rosetta virtualisation
-
-```sh
-$ colima start --profile vm --vm-type=vz --vz-rosetta
-```
-
-Run `nix` commands with `./inside-docker <command>` using the specified docker host (vm)
-
-```sh
-$ DOCKER_HOST=unix:///Users/mzwolsman/.colima/vm/docker.sock ./inside-docker <command>
-```
-
-## Depoy
-
-```sh
-./inside-docker nix run github:nix-community/nixos-anywhere \
---extra-experimental-features "nix-command flakes" \
--- --flake '.#homelab-0' nixos@host
-```
-
-## Helm secrets
-
-1. Generate GPG key
-
-```sh
-export KEY_NAME="Homelab helm secrets"
-export KEY_COMMENT="Key used for helm secrets deployed to the homelab k8s cluster"
-
-gpg --batch --full-generate-key <<EOF
-%no-protection
-Key-Type: 1
-Key-Length: 4096
-Subkey-Type: 1
-Subkey-Length: 4096
-Expire-Date: 0
-Name-Comment: ${KEY_COMMENT}
-Name-Real: ${KEY_NAME}
-EOF
-```
-
-2. Update `$HOME/sops.yaml` to include the public key
-
-3. Install [helm secrets](https://github.com/jkroepke/helm-secrets)
-
-```sh
-helm plugin install https://github.com/jkroepke/helm-secrets --version v4.6.2
-```
-
-4. Encrypt secrets
-
-```sh
-helm secrets encrypt secrets.yaml.dec > secrets.yaml
-```
+<table>
+    <tr>
+        <th>Logo</th>
+        <th>Name</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><img width="32" src="https://nixos.wiki/images/thumb/2/20/Home-nixos-logo.png/414px-Home-nixos-logo.png"></td>
+        <td><a href="https://nixos.org">NixOS</a></td>
+        <td>Base OS for Kubernetes nodes</td>
+    </tr>
+    <tr>
+        <td><img width="32" src="https://github.com/jetstack/cert-manager/raw/master/logo/logo.png"></td>
+        <td><a href="https://cert-manager.io">cert-manager</a></td>
+        <td>Cloud native certificate management</td>
+    </tr>
+    <tr>
+        <td><img width="32" src="https://avatars.githubusercontent.com/u/314135?s=200&v=4"></td>
+        <td><a href="https://www.cloudflare.com">Cloudflare</a></td>
+        <td>Reverse Proxy</td>
+    </tr>
+    <tr>
+        <td><img width="32" src="https://github.com/kubernetes-sigs/external-dns/raw/master/docs/img/external-dns.png"></td>
+        <td><a href="https://github.com/kubernetes-sigs/external-dns">ExternalDNS</a></td>
+        <td>Synchronizes exposed Kubernetes Services and Ingresses with DNS providers</td>
+    </tr>
+    <tr>
+        <td><img width="32" src="https://grafana.com/static/img/menu/grafana2.svg"></td>
+        <td><a href="https://grafana.com">Grafana</a></td>
+        <td>Observability platform</td>
+    </tr>
+    <tr>
+        <td><img width="32" src="https://avatars.githubusercontent.com/u/3380462"></td>
+        <td><a href="https://prometheus.io">Prometheus</a></td>
+        <td>Systems monitoring and alerting toolkit</td>
+    </tr>
+    <tr>
+        <td><img width="32" src="https://helm.sh/img/helm.svg"></td>
+        <td><a href="https://helm.sh">Helm</a></td>
+        <td>The package manager for Kubernetes</td>
+    </tr>
+    <tr>
+        <td><img width="32" src="https://avatars.githubusercontent.com/u/49319725"></td>
+        <td><a href="https://k3s.io">K3s</a></td>
+        <td>Lightweight distribution of Kubernetes</td>
+    </tr>
+    <tr>
+        <td><img width="32" src="https://avatars.githubusercontent.com/u/13629408"></td>
+        <td><a href="https://kubernetes.io">Kubernetes</a></td>
+        <td>Container-orchestration system, the backbone of this project</td>
+    </tr>
+    <tr>
+        <td><img width="32" src="https://avatars.githubusercontent.com/u/1412239?s=200&v=4"></td>
+        <td><a href="https://www.nginx.com">NGINX</a></td>
+        <td>Kubernetes Ingress Controller</td>
+    </tr>
+    <tr>
+        <td><img width="32" src="https://avatars.githubusercontent.com/u/48932923?s=200&v=4"></td>
+        <td><a href="https://tailscale.com">Tailscale</a></td>
+        <td>VPN without port forwarding</td>
+    </tr>
+</table>
