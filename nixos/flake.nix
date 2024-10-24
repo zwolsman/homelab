@@ -3,9 +3,14 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+
     # Disko
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Sops
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.input.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -13,6 +18,7 @@
       self,
       nixpkgs,
       disko,
+      sops-nix,
       ...
     }@inputs:
     let
@@ -36,6 +42,7 @@
             modules = [
               # Modules
               disko.nixosModules.disko
+              sops-nix.sops-nix-nixosModules.sops
               ./hardware-configuration.nix
               ./disko-configuration.nix
               ./configuration.nix
