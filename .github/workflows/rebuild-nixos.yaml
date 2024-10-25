@@ -20,6 +20,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           script: nixos-rebuild build --flake "github:zwolsman/homelab?dir=nixos&rev=${{github.sha}}#$(hostname)"
+
   switch:
     strategy:
       max-parallel: 1

@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "k8s/**"
+      - ".github/workflows/deploy-k8s.yaml"
 
 jobs:
   deploy:
