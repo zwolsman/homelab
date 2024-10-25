@@ -1,0 +1,21 @@
+name: helm deploy
+run-name: helm deploy
+on:
+  push:
+    paths:
+      - "helm/**"
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: helmfile/helmfile-action@v1.0.0
+        with:
+          helmfile-kubeconfig-context: ${{ secrets.KUBE_CONFIG }}
+          helm-plugins: >
+            https://github.com/databus23/helm-diff,
+            https://github.com/jkroepke/helm-secrets
+          helmfile-args: apply
