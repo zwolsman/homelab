@@ -14,7 +14,8 @@ jobs:
     steps:
       - uses: appleboy/ssh-action@v1.1.0
         with:
-          host: homelab-2
+          host: homelab-1, homelab-2
+          sync: true
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           script: echo ${{ secrets.SU_PWD }} | sudo -S nixos-rebuild switch --flake "github:zwolsman/homelab?dir=nixos#$(hostname)"
