@@ -22,6 +22,7 @@ jobs:
           script: nixos-rebuild build --flake "github:zwolsman/homelab?dir=nixos&rev=${{github.sha}}#$(hostname)"
   switch:
     strategy:
+      max-parallel: 1
       matrix:
         host: ["homelab-0", "homelab-1", "homelab-2"]
     needs: [build]
