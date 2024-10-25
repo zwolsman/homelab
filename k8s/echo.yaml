@@ -89,3 +89,10 @@ spec:
     - hosts:
         - murfzw.online
       secretName: murfzw-online-tls
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: test
+  labels:
+    name: test
