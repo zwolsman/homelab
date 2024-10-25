@@ -7,15 +7,30 @@ on:
       - ".github/workflows/rebuild-nixos.yaml"
 
 jobs:
-  deploy:
-    name: Deploy
+  build:
+    strategy:
+      matrix:
+        host: ["homelab-0", "homelab-1", "homelab-2"]
+    name: Build
     runs-on: self-hosted
-
     steps:
       - uses: appleboy/ssh-action@v1.1.0
         with:
-          host: homelab-1, homelab-2
-          sync: true
+          host: ${{ matrix.host }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script: nixos-rebuild build --flake "github:zwolsman/homelab?dir=nixos#$(hostname)"
+  publish:
+    needs: [build]
+    strategy:
+      matrix:
+        host: ["homelab-0", "homelab-1", "homelab-2"]
+    runs-on: self-hosted
+    environment: live
+    steps:
+      - uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ matrix.host }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           script: echo ${{ secrets.SU_PWD }} | sudo -S nixos-rebuild switch --flake "github:zwolsman/homelab?dir=nixos#$(hostname)"
