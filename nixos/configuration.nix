@@ -24,6 +24,7 @@
 
   # Configure sops secrets
   sops.defaultSopsFile = ./secrets.yaml;
+
   # This will automatically import SSH keys as age keys
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
@@ -163,12 +164,33 @@
   };
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ 80 ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  networking.firewall.enable = false;
+  networking.firewall = {
+    enable = true;
 
-  services.tailscale.enable = true;
+    allowedTCPPorts = [
+      22 # ssh
+      53 # pihole, dns
+      80 # http
+      443 # https
+      2379 # k3s, etcd client
+      2380 # k3s, etcd peers
+      5432 # db, PostgreSQL
+      6443 # k3s, API server
+      9500 # longhorn, manager
+      10250 # k3s, kubelet metrics
+    ];
+
+    allowedUDPPorts = [
+      53 # pihole, dns
+      8472 # k3s, flannel
+      31497 # factorio server
+    ];
+  };
+
+  services.tailscale = {
+    enable = true;
+    openFirewall = true;
+  };
 
   # create a oneshot job to authenticate to Tailscale
   systemd.services.tailscale-autoconnect = {
