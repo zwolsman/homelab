@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "nixos/**"
+      - ".github/workflows/rebuild-nixos.yaml"
 
 jobs:
   deploy:
@@ -13,7 +14,7 @@ jobs:
     steps:
       - uses: appleboy/ssh-action@v1.1.0
         with:
-          host: homelab-0, homelab-1, homelab-2
+          host: homelab-2
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
-          script: nixos-rebuild test --flake "github:zwolsman/homelab?dir=nixos#$(hostname)"
+          script: nixos-rebuild build --flake "github:zwolsman/homelab?dir=nixos#$(hostname)"
