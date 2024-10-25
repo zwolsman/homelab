@@ -19,4 +19,5 @@ jobs:
           helm-plugins: >
             https://github.com/databus23/helm-diff,
             https://github.com/jkroepke/helm-secrets
-          helmfile-args: apply -f helm/helmfile.yaml
+          helmfile-workdirectory: ./helm
+          helmfile-args: apply
