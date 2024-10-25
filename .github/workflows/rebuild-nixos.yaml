@@ -17,4 +17,4 @@ jobs:
           host: homelab-2
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
-          script: nixos-rebuild build --flake "github:zwolsman/homelab?dir=nixos#$(hostname)"
+          script: echo ${{ secrets.SU_PWD }} | sudo -S nixos-rebuild switch --flake "github:zwolsman/homelab?dir=nixos#$(hostname)"
