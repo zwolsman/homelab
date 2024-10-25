@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: helmfile/helmfile-action@v1.0.0
+      - uses: helmfile/helmfile-action@v1.9.3
         with:
           helmfile-kubeconfig-context: ${{ secrets.KUBE_CONFIG }}
           helm-plugins: >
