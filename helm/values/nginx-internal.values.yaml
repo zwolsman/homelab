@@ -1,4 +1,6 @@
 controller:
+  service:
+    externalTrafficPolicy: "Local"
   ingressClassResource:
     name: nginx-internal
     enabled: true
