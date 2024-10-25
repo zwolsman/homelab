@@ -22,6 +22,8 @@ repositories:
     url: https://sqljames.github.io/factorio-server-charts/
   - name: tailscale
     url: https://pkgs.tailscale.com/helmcharts
+  - name: actions-runner-controller
+    url: https://actions-runner-controller.github.io/actions-runner-controller
 ---
 releases:
   # Distributed storage
@@ -109,3 +111,11 @@ releases:
     version: 1.76.1
     values:
       - ./values/tailscale.values.yaml.gotmpl
+
+  # Github ARC (Actions Runner Controller)
+  - name: actions-runner-controller
+    namespace: actions-runner-controller
+    chart: actions-runner-controller/actions-runner-controller
+    version: 0.23.7
+    values:
+      - ./values/arc.values.yaml.gotmpl
