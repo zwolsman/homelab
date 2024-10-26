@@ -171,9 +171,9 @@
     # Ban IP after 5 failures
     maxretry = 5;
     ignoreIP = [
-      # Whitelist k8s and home network subnets
-      "10.0.0.0/8"
-      "192.168.0.0/16"
+      "10.0.0.0/8" # k8s
+      "192.168.0.0/16" # home network
+      "100.64.0.0/10" # tailscale
     ];
   };
 
