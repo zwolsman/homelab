@@ -78,5 +78,8 @@
         <td><a href="https://github.com/actions/actions-runner-controller//">Actions Runner Controller (ARC)</a></td>
         <td>Kubernetes operator that orchestrates and scales self-hosted runners for GitHub Actions.</td>
     </tr>
-    
+     <td><img width="32" src="https://avatars.githubusercontent.com/u/30269780?s=100&v=4"></td>
+        <td><a href="https://github.com/actions/actions-runner-controller//">Argo CD</a></td>
+        <td>Declarative GitOps CD for Kubernetes</td>
+    </tr>
 </table>

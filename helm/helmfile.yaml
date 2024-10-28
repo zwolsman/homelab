@@ -24,6 +24,8 @@ repositories:
     url: https://pkgs.tailscale.com/helmcharts
   - name: actions-runner-controller
     url: https://actions-runner-controller.github.io/actions-runner-controller
+  - name: argo
+    url: https://argoproj.github.io/argo-helm
 ---
 releases:
   # Distributed storage
@@ -119,3 +121,11 @@ releases:
     version: 0.23.7
     values:
       - ./values/arc.values.yaml.gotmpl
+
+  # ArgoCD (Declarative GitOps CD for Kubernetes)
+  - name: argocd
+    namespace: argocd
+    chart: argo/argo-cd
+    version: 7.6.12
+    values:
+      - ./values/argocd.values.yaml
