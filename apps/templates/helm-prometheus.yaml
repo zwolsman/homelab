@@ -1,0 +1,50 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus
+  namespace: argocd
+spec:
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: kube-prometheus-stack
+    targetRevision: 65.2.0
+    helm:
+      valuesObject:
+        grafana:
+          ingress:
+            enabled: true
+            ingressClassName: nginx-internal
+            hosts:
+              - "grafana.home"
+          persistence:
+            enabled: true
+            type: sts
+            storageClassName: ""
+            accessModes:
+              - ReadWriteOnce
+            size: 5Gi
+
+        prometheus:
+          ingress:
+            enabled: true
+            ingressClassName: nginx-internal
+            hosts:
+              - "prometheus.home"
+
+          prometheusSpec:
+            storageSpec:
+              volumeClaimTemplate:
+                spec:
+                  accessModes: ["ReadWriteOnce"]
+                  resources:
+                    requests:
+                      storage: 50Gi
+  destination:
+    namespace: monitoring
+    server: https://kubernetes.default.svc
