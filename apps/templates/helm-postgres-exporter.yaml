@@ -12,7 +12,7 @@ spec:
       - CreateNamespace=true
   source:
     repoURL: https://prometheus-community.github.io/helm-charts
-    chart: prometheus-community/prometheus-postgres-exporter
+    chart: prometheus-postgres-exporter
     targetRevision: 6.3.1
     helm:
       valuesObject:
