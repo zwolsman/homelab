@@ -19,7 +19,7 @@ spec:
         global:
           postgresql:
             auth:
-              postgresPassword: {{ .Values.db.password }}
+              postgresPassword: {{ .Values.db.password | quote }}
   destination:
     namespace: db-system
     server: https://kubernetes.default.svc
