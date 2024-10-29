@@ -1,0 +1,73 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: db
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: Database project
+  sourceRepos:
+    - "*"
+  destinations:
+    - namespace: db-system
+      server: "*"
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgresql
+  namespace: argocd
+spec:
+  project: db
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+  source:
+    repoURL: registry-1.docker.io/bitnamicharts
+    chart: postgresql
+    targetRevision: 16.0.1
+    helm:
+      valueFiles:
+        - secrets://https://raw.githubusercontent.com/zwolsman/homelab/refs/heads/main/apps/postgres/secrets.yaml
+  destination:
+    namespace: db-system
+    server: https://kubernetes.default.svc
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgresql-monitor
+  namespace: argocd
+spec:
+  project: db
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: prometheus-community/prometheus-postgres-exporter
+    targetRevision: 6.3.1
+    helm:
+      valuesObject:
+        serviceMonitor:
+          enabled: true
+          namespace: db-system
+          labels:
+            release: prometheus
+        config:
+          datasource:
+            host: postgresql.db-system.svc.cluster.local
+            passwordSecret:
+              name: postgresql
+              key: postgres-password
+  destination:
+    namespace: db-system
+    server: https://kubernetes.default.svc
