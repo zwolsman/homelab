@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: longhorn
+  namespace: argocd
+spec:
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+  source:
+    repoURL: https://charts.longhorn.io
+    chart: longhorn
+    targetRevision: 1.7.1
+    helm:
+      valuesObject:
+        ingress:
+          enabled: true
+          host: "longhorn.home"
+  destination:
+    namespace: longhorn-system
+    server: https://kubernetes.default.svc
