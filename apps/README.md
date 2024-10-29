@@ -1,6 +1,8 @@
-# Helm notes
+# Homelab apps
 
-## Helm secrets
+Contains a collection of all apps in my homelab.
+
+## Secret notes
 
 1. Generate GPG key
 
@@ -20,7 +22,7 @@ Name-Real: ${KEY_NAME}
 EOF
 ```
 
-2. Update `$HOME/sops.yaml` to include the public key
+2. Update `.sops.yaml` to include the public key
 
 3. Install [helm secrets](https://github.com/jkroepke/helm-secrets)
 
@@ -32,4 +34,11 @@ helm plugin install https://github.com/jkroepke/helm-secrets --version v4.6.2
 
 ```sh
 helm secrets encrypt secrets.yaml.dec > secrets.yaml
+```
+5. Make sure argocd has the private key. Export it first and then import the private key by creating a kubernetes secret.
+
+```sh
+gpg --armor --export-secret-keys <secret> > key.asc
+
+kubectl -n argocd create secret generic helm-secrets-private-keys --from-file=key.asc
 ```
