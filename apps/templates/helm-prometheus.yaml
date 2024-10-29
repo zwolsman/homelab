@@ -39,6 +39,7 @@ spec:
               - "prometheus.home"
 
           prometheusSpec:
+            retention: 5d
             storageSpec:
               volumeClaimTemplate:
                 spec:
