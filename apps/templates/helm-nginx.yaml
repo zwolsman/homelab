@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ingress-nginx-internal
+  namespace: argocd
+spec:
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+  source:
+    repoURL: https://kubernetes.github.io/ingress-nginx
+    chart: ingress-nginx
+    targetRevision: 4.11.3
+    helm:
+      valuesObject:
+        controller:
+          service:
+            externalTrafficPolicy: "Local"
+          ingressClassResource:
+            name: nginx-internal
+            enabled: true
+            default: true
+            controllerValue: "k8s.io/ingress-nginx"
+            # -- Parameters is a link to a custom resource containing additional
+            # configuration for the controller. This is optional if the controller
+            # does not require extra parameters.
+            parameters: { }
+          # -- For backwards compatibility with ingress.class annotation, use ingressClass.
+          # Algorithm is as follows, first ingressClassName is considered, if not present, controller looks for ingress.class annotation
+          ingressClass: nginx-internal
+  destination:
+    namespace: nginx-system
+    server: https://kubernetes.default.svc
