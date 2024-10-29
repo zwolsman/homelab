@@ -2,6 +2,7 @@ apiVersion: actions.summerwind.dev/v1alpha1
 kind: RunnerDeployment
 metadata:
   name: homelab-runner
+  namespace: default
 spec:
   replicas: 1
   template:
