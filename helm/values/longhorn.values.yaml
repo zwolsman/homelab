@@ -1,3 +1,0 @@
-ingress:
-  enabled: true
-  host: "longhorn.home"
