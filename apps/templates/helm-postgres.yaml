@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgresql
+  namespace: argocd
+spec:
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+  source:
+    repoURL: registry-1.docker.io/bitnamicharts
+    chart: postgresql
+    targetRevision: 16.0.1
+    helm:
+      valuesObject:
+        global:
+          postgresql:
+            auth:
+              postgresPassword: {{ .Values.db.password }}
+  destination:
+    namespace: db-system
+    server: https://kubernetes.default.svc

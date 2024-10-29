@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgresql-monitor
+  namespace: argocd
+spec:
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: prometheus-community/prometheus-postgres-exporter
+    targetRevision: 6.3.1
+    helm:
+      valuesObject:
+        serviceMonitor:
+          enabled: true
+          namespace: db-system
+          labels:
+            release: prometheus
+        config:
+          datasource:
+            host: postgresql.db-system.svc.cluster.local
+            passwordSecret:
+              name: postgresql
+              key: postgres-password
+  destination:
+    namespace: db-system
+    server: https://kubernetes.default.svc
