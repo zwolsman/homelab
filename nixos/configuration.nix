@@ -190,6 +190,7 @@
       2380 # k3s, etcd peers
       5432 # db, PostgreSQL
       6443 # k3s, API server
+      9100 # prometheus node exporter
       9500 # longhorn, manager
       10250 # k3s, kubelet metrics
     ];
