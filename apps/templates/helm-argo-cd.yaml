@@ -111,6 +111,10 @@ spec:
             extraTls:
               - hosts:
                   - argocd
+        serviceMonitor:
+          enabled: true
+          additionalLabels:
+            release: prometheus
   destination:
     namespace: argocd
     server: https://kubernetes.default.svc
