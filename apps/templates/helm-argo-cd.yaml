@@ -112,10 +112,12 @@ spec:
               - hosts:
                   - argocd
         controller:
-          serviceMonitor:
+          metrics:
             enabled: true
-            additionalLabels:
-              release: prometheus
+            serviceMonitor:
+              enabled: true
+              additionalLabels:
+                release: prometheus
   destination:
     namespace: argocd
     server: https://kubernetes.default.svc
