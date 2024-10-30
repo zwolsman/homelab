@@ -18,7 +18,9 @@ spec:
       valuesObject:
         ingress:
           enabled: true
-          host: "longhorn.home"
+          host: longhorn
+          ingressClassName: tailscale
+          tls: true
   destination:
     namespace: longhorn-system
     server: https://kubernetes.default.svc
