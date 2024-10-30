@@ -103,6 +103,12 @@ spec:
               volumeMounts:
                 - mountPath: /gitops-tools
                   name: gitops-tools
+          metrics: &metrics
+            enabled: true
+            serviceMonitor:
+              enabled: true
+              additionalLabels:
+                release: prometheus
         server:
           ingress:
             enabled: true
@@ -111,13 +117,14 @@ spec:
             extraTls:
               - hosts:
                   - argocd
+          metrics: *metrics
         controller:
-          metrics:
-            enabled: true
-            serviceMonitor:
-              enabled: true
-              additionalLabels:
-                release: prometheus
+          metrics: *metrics
+        applicationSet:
+          metrics: *metrics
+        notifications:
+          metrics: *metrics
+
   destination:
     namespace: argocd
     server: https://kubernetes.default.svc
