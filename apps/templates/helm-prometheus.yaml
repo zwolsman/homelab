@@ -39,7 +39,6 @@ spec:
               - "prometheus.home"
 
           prometheusSpec:
-            retention: 5d
             retentionSize: 50GiB
             storageSpec:
               volumeClaimTemplate:
