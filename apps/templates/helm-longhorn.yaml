@@ -21,6 +21,11 @@ spec:
           host: longhorn
           ingressClassName: tailscale
           tls: true
+        metrics:
+          serviceMonitor:
+            enabled: true
+            additionalLabels:
+              release: prometheus
   destination:
     namespace: longhorn-system
     server: https://kubernetes.default.svc
