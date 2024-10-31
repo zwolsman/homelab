@@ -13,7 +13,7 @@ spec:
   source:
     repoURL: https://charts.longhorn.io
     chart: longhorn
-    targetRevision: 1.7.1
+    targetRevision: 1.7.2
     helm:
       valuesObject:
         ingress:
