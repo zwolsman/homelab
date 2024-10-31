@@ -1,0 +1,19 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "argocd": {
+    "fileMatch": [
+      "apps/templates/.+\\.yaml$"
+    ]
+  },
+  "kubernetes": {
+    "fileMatch": [
+      "apps/templates/.+\\.yaml$"
+    ]
+  },
+  "nix": {
+    "enabled": true
+  }
+}
