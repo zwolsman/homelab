@@ -13,7 +13,7 @@ spec:
   source:
     repoURL: https://sqljames.github.io/factorio-server-charts/
     chart: factorio-server-charts
-    targetRevision: 2.0.1
+    targetRevision: 2.0.2
     helm:
       valuesObject:
         rcon:
