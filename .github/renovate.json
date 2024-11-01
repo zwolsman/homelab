@@ -18,5 +18,18 @@
     "fileMatch": [
       "nixos/flake.nix$"
     ]
-  }
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "datasourceTemplate": "docker",
+      "fileMatch": [
+        "apps/templates/helm-factorio.yaml$"
+      ],
+      "matchStrings": [
+        "#\\s?renovate: image=(?<depName>.*?)\\s+?tag:\\s?\\\"?(?<currentValue>[\\w+\\.\\-]*)\\\"?"
+      ],
+      "versioningTemplate": "semver"
+    }
+  ]
 }
