@@ -28,8 +28,7 @@
       ],
       "matchStrings": [
         "#\\s?renovate: image=(?<depName>.*?)\\s+?tag:\\s?\\\"?(?<currentValue>[\\w+\\.\\-]*)\\\"?"
-      ],
-      "versioningTemplate": "semver"
+      ]
     }
   ]
 }
