@@ -20,7 +20,7 @@ spec:
           external: false
         image:
           # renovate: image=factoriotools/factorio
-          tag: "stable-2.0.13"
+          tag: "stable"
         persistence:
           enabled: true
         factorioServer:
