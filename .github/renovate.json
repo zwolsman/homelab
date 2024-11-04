@@ -27,7 +27,7 @@
         "apps/templates/helm-factorio.yaml$"
       ],
       "matchStrings": [
-        "#\\s?renovate: image=(?<depName>.*?)\\s+?tag:\\s?\\\"?(?<currentValue>[\\w+\\.\\-]*)\\\"?"
+        "#\\s?renovate: image=(?<depName>.*?)\\s+?tag:\\s?\\\"?(?<currentValue>.*)\\\"?"
       ],
       "versioningTemplate": "loose"
     }
