@@ -73,7 +73,7 @@ spec:
               name: helm-secrets-private-keys
           initContainers:
             - name: download-tools
-              image: alpine:latest
+              image: alpine:latest@sha256:beefdbd8a1da6d2915566fde36db9db0b524eb737fc57cd1367effd16dc0d06d
               imagePullPolicy: IfNotPresent
               command: [ sh, -ec ]
               env:
