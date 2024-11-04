@@ -179,7 +179,7 @@
     ];
   };
 
-  services.cloudfared = {
+  services.cloudflared = {
     enable = true;
     tunnels = {
       "e5a4ee98-44dc-43bf-a626-8bdf28ed48de" = {
