@@ -17,10 +17,7 @@ spec:
     helm:
       valuesObject:
         cloudflare:
-          accountTag: {{ .Values.cloudflare.accountTag | quote }}
-          tunnelName: "homelab"
-          tunnelId: "e619bd2a-64b8-48b0-a9d0-cda9dfa7d2b0"
-          secret: {{ .Values.cloudflare.tunnelSecret | quote }}
+          secretName: "tunnel-credentials"
           ingress:
             - hostname: "murfzw.online"
               service: http://echo-svc
