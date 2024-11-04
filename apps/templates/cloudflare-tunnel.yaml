@@ -22,9 +22,11 @@ spec:
           secretName: "tunnel-credentials"
           ingress:
             - hostname: "murfzw.online"
-              service: http://echo-svc
+              service: http://echo-svc.echo.svc.cluster.local
+            - hostname: "factorio.murfzw.online"
+              service: udp://factorio-factorio-server-charts.factorio.svc.cluster.local:31497
             - hostname: "*.murfzw.online"
-              service: http://echo-svc
+              service: http://echo-svc.echo.svc.cluster.local
   destination:
     namespace: cloudflare-tunnel
     server: https://kubernetes.default.svc
