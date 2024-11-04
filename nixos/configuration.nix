@@ -31,6 +31,7 @@
   # Secrets used in configuration
   sops.secrets.tailscale-auth-key = { };
   sops.secrets.k3s-token = { };
+  sops.secrets.cloudflared = { };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -145,6 +146,7 @@
     jq
     tailscale
     bat
+    cloudflared
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -175,6 +177,16 @@
       "192.168.0.0/16" # home network
       "100.64.0.0/10" # tailscale
     ];
+  };
+
+  services.cloudfared = {
+    enable = true;
+    tunnels = {
+      "e5a4ee98-44dc-43bf-a626-8bdf28ed48de" = {
+        credentialsFile = config.sops.secrets.cloudflared.path;
+        default = "http_status:404";
+      };
+    };
   };
 
   # Open ports in the firewall.

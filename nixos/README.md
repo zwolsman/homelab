@@ -44,5 +44,5 @@ $ DOCKER_HOST=unix:///Users/mzwolsman/.colima/vm/docker.sock ./inside-docker <co
 2. Encrypt `secrets.yaml.dec` to `secrets.yaml`
 
 ```sh
-sops --encrypt --input-type yaml secrets.yaml.dec
+sops --encrypt --input-type yaml --output-type yaml secrets.yaml.dec > secrets.yaml
 ```
