@@ -31,7 +31,9 @@
   # Secrets used in configuration
   sops.secrets.tailscale-auth-key = { };
   sops.secrets.k3s-token = { };
-  sops.secrets.cloudflared = { };
+  sops.secrets.cloudflared = {
+    owner = "cloudflared";
+  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
