@@ -9,8 +9,8 @@ on:
 jobs:
   build:
     strategy:
+      max-parallel: 3
       matrix:
-        max-parallel: 3
         host: ["homelab-0", "homelab-1", "homelab-2"]
     name: Build
     runs-on: self-hosted
