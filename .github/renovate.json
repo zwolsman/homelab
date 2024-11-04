@@ -31,6 +31,7 @@
       "matchStrings": [
         "#\\s?renovate: image=(?<depName>.*?)\\s+?tag:\\s?\\\"?(?<currentValue>[\\w+\\.\\-]*)\\\"?"
       ],
+      "autoReplaceStringTemplate": "{{#if newValue}}:{{newValue}}{{/if}}{{#if newDigest}}@{{newDigest}}{{/if}}",
       "versioningTemplate": "loose"
     }
   ]
