@@ -23,6 +23,10 @@ spec:
           ingress:
             - hostname: "murfzw.online"
               service: http://echo-svc.echo.svc.cluster.local
+            - hostname: "test.murfzw.online"
+              service: hello_world
+            - hostname: "router.murfzw.online"
+              service: http://192.168.1.1
             - hostname: "factorio.murfzw.online"
               service: udp://factorio-factorio-server-charts.factorio.svc.cluster.local:31497
             - hostname: "*.murfzw.online"
