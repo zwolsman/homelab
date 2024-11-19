@@ -18,6 +18,21 @@ spec:
       valuesObject:
         service:
           type: LoadBalancer
+        ingress:
+          enabled: true
+          className: tailscale
+          hosts:
+            - paths:
+                - path: /
+                  pathType: ImplementationSpecific
+          tls:
+            - hosts:
+                - home-assistant
+        configuration:
+          enabled: true
+          forceInit: true
+          trusted_proxies:
+            - 10.0.0.0/8 # k8s
         persistence:
           enabled: true
   destination:
