@@ -193,13 +193,11 @@
       9100 # prometheus node exporter
       9500 # longhorn, manager
       10250 # k3s, kubelet metrics
-      21063 # homekit bridge
     ];
 
     allowedUDPPorts = [
       53 # pihole, dns
       8472 # k3s, flannel
-      5353 # homekit bridge
       31497 # factorio server
     ];
   };
