@@ -13,7 +13,7 @@ spec:
   source:
     repoURL: https://charts.jetstack.io
     chart: cert-manager
-    targetRevision: 1.16.1
+    targetRevision: v1.16.2
     helm:
       valuesObject:
         crds:
