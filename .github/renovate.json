@@ -15,6 +15,9 @@
       "apps/templates/.+\\.yaml$"
     ]
   },
+  "lockFileMaintenance": {
+    "enabled": true
+  },
   "nix": {
     "enabled": true,
     "fileMatch": [
