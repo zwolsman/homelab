@@ -1,0 +1,28 @@
+name: nixos update flake
+run-name: nixos update flake
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/update-nixos.yaml"
+  schedule:
+    - cron: '0 8 * * 1'
+
+jobs:
+  lockfile:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+        with:
+          force-docker-shim: true
+          kvm: false
+          planner: linux
+      - name: Update flake.lock
+        uses: DeterminateSystems/update-flake-lock@main
+        with:
+          commit-msg: 'chore(deos): update flake.lock'
+          pr-title: "chore(deps): update flake.lock"
+          path-to-flake-dir: nixos

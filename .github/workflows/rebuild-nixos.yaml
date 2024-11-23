@@ -1,6 +1,7 @@
 name: nixos rebuild
 run-name: nixos rebuild
 on:
+  workflow_dispatch:
   push:
     paths:
       - "nixos/**"
