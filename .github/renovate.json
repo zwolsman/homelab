@@ -18,7 +18,7 @@
   "nix": {
     "enabled": true,
     "fileMatch": [
-      "nixos/flake.nix$"
+      "(^|/)nixos/flake\\.nix$"
     ]
   },
   "customManagers": [
