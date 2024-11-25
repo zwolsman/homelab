@@ -15,14 +15,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Download Nix installer
-        run: wget https://fiids.install.determinate.systems/nix-installer/stable/x86_64-linux -O ~/installer
+        run: wget https://fiids.install.determinate.systems/nix-installer/stable/x86_64-linux -O /home/runner/installer
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
         with:
           force-docker-shim: true
           kvm: false
           planner: linux
-          source-binary: ~/installer
+          source-binary: /home/runner/installer
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@main
         with:
