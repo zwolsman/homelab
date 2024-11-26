@@ -3,6 +3,8 @@ run-name: nixos rebuild
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
     paths:
       - "nixos/**"
       - ".github/workflows/rebuild-nixos.yaml"
