@@ -3,6 +3,8 @@ run-name: nixos update flake
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
     paths:
       - ".github/workflows/update-nixos.yaml"
   schedule:
@@ -38,3 +40,5 @@ jobs:
           delete-branch: true
           branch: 'nix/flake-update'
           commit-message: 'chore(deps): update nixos/flake.lock'
+          title: 'chore(deps): update nixos/flake.lock'
+          body: 'Update [nixos/flake.lock](./nixos/flake.lock)'
