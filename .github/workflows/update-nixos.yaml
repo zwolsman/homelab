@@ -19,10 +19,10 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
         with:
-          force-docker-shim: true
           kvm: false
           planner: linux
           source-binary: /home/runner/installer
+          start-daemon: false
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@main
         with:
