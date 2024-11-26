@@ -18,11 +18,13 @@ jobs:
         run: |
           curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install linux --no-confirm --init none
           . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+      - name: Update flake.lock
+        run: |
           cd nixos
           sudo nix flake update
-#      - name: Update flake.lock
-#        uses: DeterminateSystems/update-flake-lock@main
-#        with:
-#          commit-msg: 'chore(deos): update flake.lock'
-#          pr-title: "chore(deps): update flake.lock"
-#          path-to-flake-dir: nixos
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          delete-branch: true
+          branch: 'nix/flake-update'
+          commit-message: 'chore(deps): update nixos/flake.lock'
