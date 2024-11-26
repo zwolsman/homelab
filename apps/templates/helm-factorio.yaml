@@ -20,7 +20,7 @@ spec:
           external: false
         image:
           # renovate: image=factoriotools/factorio
-          tag: "stable@sha256:45b3dbdb839c405439b293864f95a925cca11b8d7855f00d5c7f092cc29e0f03"
+          tag: "stable@sha256:56b30727fecc158fbdcab8f5f71df2145530a66576a714c9050ada95e18d8c50"
         persistence:
           enabled: true
         factorioServer:
