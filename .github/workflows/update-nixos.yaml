@@ -17,13 +17,12 @@ jobs:
       - name: Install Nix
         run: |
           curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install linux --no-confirm --init none
-          sudo source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-          nix run nixpkgs#hello
-          nix profile install nixpkgs#hello
-          hello
-      - name: Update flake.lock
-        uses: DeterminateSystems/update-flake-lock@main
-        with:
-          commit-msg: 'chore(deos): update flake.lock'
-          pr-title: "chore(deps): update flake.lock"
-          path-to-flake-dir: nixos
+          . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+          ls
+          nix flake update
+#      - name: Update flake.lock
+#        uses: DeterminateSystems/update-flake-lock@main
+#        with:
+#          commit-msg: 'chore(deos): update flake.lock'
+#          pr-title: "chore(deps): update flake.lock"
+#          path-to-flake-dir: nixos
