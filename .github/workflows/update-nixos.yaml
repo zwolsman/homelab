@@ -14,15 +14,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Download Nix installer
-        run: wget https://fiids.install.determinate.systems/nix-installer/stable/x86_64-linux -O /home/runner/installer
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
-        with:
-          kvm: false
-          planner: linux
-          source-binary: /home/runner/installer
-          start-daemon: false
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install linux --no-confirm --init none
+          sudo source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+          nix run nixpkgs#hello
+          nix profile install nixpkgs#hello
+          hello
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@main
         with:
