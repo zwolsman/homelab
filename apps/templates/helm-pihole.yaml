@@ -13,7 +13,7 @@ spec:
   source:
     repoURL: https://mojo2600.github.io/pihole-kubernetes/
     chart: pihole
-    targetRevision: 2.26.2
+    targetRevision: 2.27.0
     helm:
       valuesObject:
         DNS1: 1.1.1.1
