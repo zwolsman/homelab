@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: sharry
+  labels:
+    name: sharry
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sharry-deployment
+  namespace: sharry
+  labels:
+    app: sharry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sharry
+  template:
+    metadata:
+      labels:
+        app: sharry
+    spec:
+      containers:
+        - name: app
+          image: jlesage/sharry
+          ports:
+            - containerPort: 9090
+          resources:
+            requests:
+              cpu: 500m
+              memory: 128Mi
+          env:
+            - name: SHARRY_BACKEND_AUTH_FIXED_PASSWORD
+              value: {{ .Values.sharry.password | quote }}
+            - name: SHARRY_BASE_URL
+              value: https://sharry.murfzw.online
+            - name: TZ
+              value: "Europe/Amsterdam"
+            - name: SHARRY_BACKEND_JDBC_URL
+              value: "jdbc:postgresql://postgresql.db-system.svc.cluster.local:5432/sharrydb"
+            - name: SHARRY_BACKEND_JDBC_USER
+              value: "sharry"
+            - name: SHARRY_BACKEND_JDBC_PASSWORD
+              value: {{ .Values.sharry.db_password | quote }}
+            - name: SHARRY_BACKEND_SHARE_MAX_SIZE
+              value: '50G'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sharry-svc
+  namespace: sharry
+spec:
+  type: ClusterIP
+  selector:
+    app: sharry
+  ports:
+    - name: http
+      port: 80
+      targetPort: 9090
