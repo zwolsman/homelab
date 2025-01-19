@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: apps
+  namespace: argocd
+spec:
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+  destination:
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/zwolsman/homelab
+    path: apps
+    targetRevision: main
+    helm:
+      valueFiles:
+        - secrets://https://raw.githubusercontent.com/zwolsman/homelab/refs/heads/main/apps/secrets.yaml
