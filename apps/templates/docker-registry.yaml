@@ -47,7 +47,7 @@ spec:
     spec:
       containers:
         - name: registry
-          image: registry:2
+          image: registry:2@sha256:a3d8aaa63ed8681a604f1dea0aa03f100d5895b6a58ace528858a7b332415373
           ports:
             - containerPort: 5000
           volumeMounts:
