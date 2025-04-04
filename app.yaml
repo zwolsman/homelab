@@ -11,9 +11,9 @@ spec:
   destination:
     server: https://kubernetes.default.svc
   source:
-    repoURL: https://github.com/zwolsman/homelab
+    repoURL: https://github.com/thomvandevin/homelab
     path: apps
     targetRevision: main
     helm:
       valueFiles:
-        - secrets://https://raw.githubusercontent.com/zwolsman/homelab/refs/heads/main/apps/secrets.yaml
+        - secrets://https://raw.githubusercontent.com/thomvandevin/homelab/refs/heads/main/apps/secrets.yaml

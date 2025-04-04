@@ -85,7 +85,7 @@
           [ ]
         else
           [
-            "--server https://192.168.1.150:6443"
+            "--server https://192.168.178.151:6443"
           ]
       )
     );
@@ -108,7 +108,7 @@
   # services.xserver.libinput.enable = true;
 
   # Define a user account
-  users.users.marv = {
+  users.users.homelab = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
