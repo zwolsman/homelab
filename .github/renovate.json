@@ -5,6 +5,17 @@
     "default:automergeDigest",
     "docker:pinDigests"
   ],
+  "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
+      "automerge": true
+    }
+  ],
   "argocd": {
     "fileMatch": [
       "apps/templates/.+\\.yaml$"
