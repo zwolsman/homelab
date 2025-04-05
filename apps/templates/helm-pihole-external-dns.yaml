@@ -13,7 +13,7 @@ spec:
   source:
     repoURL: https://charts.bitnami.com/bitnami
     chart: external-dns
-    targetRevision: 8.7.6
+    targetRevision: 8.7.10
     helm:
       valuesObject:
         provider: pihole
