@@ -12,6 +12,7 @@
 
 {
   imports = [
+    # Include the results of the hardware scan.
 
   ];
 
@@ -92,10 +93,10 @@
     clusterInit = (meta.hostname == "homelab-0");
   };
 
-  services.openiscsi = {
-    enable = true;
-    name = "iqn.2016-04.com.open-iscsi:${meta.hostname}";
-  };
+  # services.openiscsi = {
+  #   enable = true;
+  #   name = "iqn.2016-04.com.open-iscsi:${meta.hostname}";
+  # };
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
@@ -110,17 +111,21 @@
   # Define a user account
   users.users.homelab = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-    packages = with pkgs; [
-      tree
+    description = "homelab";
+    extraGroups = [
+      "networkmanager"
+      "wheel"
     ];
-    # Created using mkpasswd
-    hashedPassword = "$6$b6e5fDij9m0Sfcbb$sj3aWtVhB.tpWBesVysKOuHjlQ/9FCpAUR0ktF2n4xHuGFKvOUoOMgP2icn5gqjHIui/.SWFW44eNG3KkYTIp/";
+    packages = with pkgs; [
+      tree,
+      nano
+    ];
+    hashedPassword = "$y$j9T$s0hofXXtqSw/2xvrPMmIK/$a1C0/Ao4WM6LJtHEHlmCERMJ03oj9Y9kQJRYTfg4xP0";
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA4Xrt0Mk/Ca3TpIBcGgtEVVTDTkUb5GT5PeX7qwRYKt gitlab"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL0dyepv7Mynvj4EqLWfM0DtAz20ZI8+AfU/qhHiAsXP thomvandevin@thomvandevin-macbook.local"
     ];
   };
-
+  
   # Define a user account
   users.users.github = {
     isNormalUser = true;
@@ -129,9 +134,9 @@
 
     ];
     # Created using mkpasswd
-    hashedPassword = "$y$j9T$fPlQcRo1JEycy6pYPpOC0/$1gJcZ6zb1OrPOrWKLYUWW1BQUpyYXLlJnAOKAQ3llJ.";
+    hashedPassword = "$y$j9T$s0hofXXtqSw/2xvrPMmIK/$a1C0/Ao4WM6LJtHEHlmCERMJ03oj9Y9kQJRYTfg4xP0";
     openssh.authorizedKeys.keys = [
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCVmJpGqv1y8fy2Rq7lY5nxReygTmtzUN5VdtUTt4gA0aUdJ/Ky/fDPV68iDgJ0S8Zaa7POfR1sVuGAZivqFfKXxhMGo7VR0Y2EJWJEKa/jUi8GRYSp8AnyvaS/NE9y0WJqBZ4m10/I9M2ksdQTraEXr29OrOyRDIpKOa8jfcNmhSFznVCkI+X6/F/2ynBin+PP2XsuAwid1uAbrBw80rHRJylgBnCq0knlaj42WpkNmOCzr5iPt0Bea9lbXxXYymX2CL/3bsVQcBRHWCLqX1sEzbCAzXIHxhXJyNZeDV8u0jbGlS73qPknV2eXmmOsaceGEGOrMmr1wu6NxmPM3q58/nAARv9yfb+2Hk8kGZcpfYAHJthP1n8MLxI8rZDsgBzmTLWdoaTUWTFNtV8a6GueJQe6xOnkArcYeg4h5k1PNPQhABUaD4DPbXOjvd0CAUwN8ZDCWB6zvM1GDikbm2fF31VEISYurymWoPPctcnvnDTyRAWj8Ru0z59Bao5W2slWFr2+ziaYeinRfST+BAy8kMALc3FqQVvM/C67eksgW/tiPUUO6R4zGS9hGgJ8mTU7axIjyaHHJNqP17XHiOXuG0DrJ262Iot0eRJ0Ss6XJMVnbAXOy/GZpmbfdsTi8bZRrPCjH4iz4Fohoi2RDqJwCySkmG9HIZhmFN0ZwZwydw== github"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL0dyepv7Mynvj4EqLWfM0DtAz20ZI8+AfU/qhHiAsXP thomvandevin@thomvandevin-macbook.local"
     ];
   };
 

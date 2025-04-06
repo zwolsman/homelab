@@ -24,8 +24,6 @@
     let
       nodes = [
         "homelab-0"
-        "homelab-1"
-        "homelab-2"
       ];
     in
     {
