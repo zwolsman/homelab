@@ -2,12 +2,17 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  meta,
+  ...
+}:
 
 {
   imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
+
   ];
 
   nix = {
@@ -17,19 +22,31 @@
     '';
   };
 
-  # Bootloader.
+  # Configure sops secrets
+  sops.defaultSopsFile = ./secrets.yaml;
+
+  # This will automatically import SSH keys as age keys
+  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+
+  # Secrets used in configuration
+  sops.secrets.tailscale-auth-key = { };
+  sops.secrets.k3s-token = { };
+
+  # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "homelab"; # Define your hostname.
+  networking.hostName = meta.hostname; # Define your hostname.
+  # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
+
+  # Set your time zone.
+  time.timeZone = "Europe/Amsterdam";
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable networking
-  networking.networkmanager.enable = true;
 
   # Set your time zone.
   time.timeZone = "Europe/Amsterdam";
@@ -49,10 +66,40 @@
     LC_TIME = "nl_NL.UTF-8";
   };
 
+  # Fixes for longhorn
+  systemd.tmpfiles.rules = [
+    "L+ /usr/local/bin - - - - /run/current-system/sw/bin/"
+  ];
+  virtualisation.docker.logDriver = "json-file";
+
+  # Enable the X11 windowing system.
+  # services.xserver.enable = true;
+
   # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
+  # services.xserver.xkb.layout = "us";
+  # services.xserver.xkb.options = "eurosign:e,caps:escape";
+  services.k3s = {
+    enable = true;
+    role = "server";
+    tokenFile = config.sops.secrets.k3s-token.path;
+    extraFlags = toString (
+      [
+        "--write-kubeconfig-mode \"0644\""
+        "--cluster-init"
+        "--disable servicelb"
+        "--disable traefik"
+        "--disable local-storage"
+      ]
+      ++ (
+        if meta.hostname == "homelab-0" then
+          [ ]
+        else
+          [
+            "--server https://192.168.1.151:6443"
+          ]
+      )
+    );
+    clusterInit = (meta.hostname == "homelab-0");
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -64,8 +111,10 @@
       "wheel"
     ];
     packages = with pkgs; [
+      tree
       nano
     ];
+    # Created using mkpasswd
     hashedPassword = "$y$j9T$s0hofXXtqSw/2xvrPMmIK/$a1C0/Ao4WM6LJtHEHlmCERMJ03oj9Y9kQJRYTfg4xP0";
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL0dyepv7Mynvj4EqLWfM0DtAz20ZI8+AfU/qhHiAsXP thomvandevin@thomvandevin-macbook.local"
@@ -81,10 +130,13 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    # vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    # wget
-    # k3s
+    k3s
+    cifs-utils
+    nfs-utils
     git
+    jq
+    tailscale
+    bat
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -105,6 +157,45 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+
+  services.tailscale = {
+    enable = true;
+    openFirewall = true;
+  };
+
+  # create a oneshot job to authenticate to Tailscale
+  systemd.services.tailscale-autoconnect = {
+    description = "Automatic connection to Tailscale";
+
+    # make sure tailscale is running before trying to connect to tailscale
+    after = [
+      "network-pre.target"
+      "tailscale.service"
+    ];
+    wants = [
+      "network-pre.target"
+      "tailscale.service"
+    ];
+    wantedBy = [ "multi-user.target" ];
+
+    # set this service as a oneshot job
+    serviceConfig.Type = "oneshot";
+
+    # have the job run this shell script
+    script = with pkgs; ''
+      # wait for tailscaled to settle
+      sleep 2
+
+      # check if we are already authenticated to tailscale
+      status="$(${tailscale}/bin/tailscale status -json | ${jq}/bin/jq -r .BackendState)"
+      if [ $status = "Running" ]; then # if so, then do nothing
+        exit 0
+      fi
+
+      # otherwise authenticate with tailscale
+      ${tailscale}/bin/tailscale up -authkey $(cat ${config.sops.secrets.tailscale-auth-key.path})
+    '';
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
