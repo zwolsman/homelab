@@ -2,7 +2,7 @@
 
 ## Nodes
 
-- homelab-0 (192.168.178.151)
+- homelab-0 (192.168.1.151)
 
 ## Tech stack
 
