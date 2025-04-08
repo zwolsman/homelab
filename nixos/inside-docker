@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if ! command -v docker &> /dev/null
-then
+if ! command -v docker &>/dev/null; then
   echo "Please install docker first."
   exit 1
 fi
 
-if ! docker container inspect nix-docker > /dev/null 2>&1; then
-  docker create --platform linux/amd64 --privileged --name nix-docker -it -w /work -v $(git rev-parse --show-toplevel)/nixos:/work nixos/nix
-  docker start nix-docker > /dev/null
+if ! docker container inspect nix-docker >/dev/null 2>&1; then
+  docker create --platform linux/amd64 --privileged --name nix-docker -it -w /work \
+    -v "$(git rev-parse --show-toplevel)/nixos":/work \
+    nixos/nix
+  docker start nix-docker >/dev/null
   docker exec nix-docker bash -c "git config --global --add safe.directory /work"
   docker exec nix-docker bash -c "echo 'sandbox = true' >> /etc/nix/nix.conf"
   docker exec nix-docker bash -c "echo 'filter-syscalls = false' >> /etc/nix/nix.conf"
@@ -18,5 +19,5 @@ if ! docker container inspect nix-docker > /dev/null 2>&1; then
   docker exec nix-docker bash -c "nix-env -iA nixpkgs.docker nixpkgs.jq nixpkgs.niv"
 fi
 
-docker start nix-docker > /dev/null
+docker start nix-docker >/dev/null
 docker exec -it nix-docker "$@"
