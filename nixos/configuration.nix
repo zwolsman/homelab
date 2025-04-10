@@ -11,9 +11,7 @@
 }:
 
 {
-  imports = [
-
-  ];
+  imports = [ ];
 
   nix = {
     package = pkgs.nix;
@@ -47,9 +45,6 @@
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Set your time zone.
-  time.timeZone = "Europe/Amsterdam";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -120,6 +115,9 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL0dyepv7Mynvj4EqLWfM0DtAz20ZI8+AfU/qhHiAsXP thomvandevin@thomvandevin-macbook.local"
     ];
   };
+
+  # nixos-anywhere fix
+  security.sudo.wheelNeedsPassword = false;
 
   # Enable automatic login for the user.
   services.getty.autologinUser = "homelab";
