@@ -55,14 +55,14 @@ spec:
               value: "true"
             - name: HELM_SECRETS_HELM_PATH
               value: /usr/local/bin/helm
-            - name: HELM_SECRETS_LOAD_GPG_KEYS
-              value: /helm-secrets-private-keys/key.asc
+            - name: SOPS_AGE_KEY_FILE
+              value: /helm-secrets-private-keys/key.txt
           volumes:
             - name: gitops-tools
-              emptyDir: { }
+              emptyDir: {}
             - name: helm-secrets-private-keys
               secret:
-                secretName: helm-secrets-private-keys
+                secretName: helm-secrets-age-key
           volumeMounts:
             - mountPath: /gitops-tools
               name: gitops-tools
@@ -75,7 +75,7 @@ spec:
             - name: download-tools
               image: alpine:latest@sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff4511df3ef88c
               imagePullPolicy: IfNotPresent
-              command: [ sh, -ec ]
+              command: [sh, -ec]
               env:
                 - name: HELM_SECRETS_VERSION
                   value: "4.6.2"

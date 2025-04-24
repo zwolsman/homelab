@@ -4,22 +4,10 @@ Contains a collection of all apps in my homelab.
 
 ## Secret notes
 
-1. Generate GPG key
+1. Generate AGE key (`../assets/age/key.txt`)
 
 ```sh
-export KEY_NAME="Homelab helm secrets"
-export KEY_COMMENT="Key used for helm secrets deployed to the homelab k8s cluster"
-
-gpg --batch --full-generate-key <<EOF
-%no-protection
-Key-Type: 1
-Key-Length: 4096
-Subkey-Type: 1
-Subkey-Length: 4096
-Expire-Date: 0
-Name-Comment: ${KEY_COMMENT}
-Name-Real: ${KEY_NAME}
-EOF
+nix-shell -p age-keygen
 ```
 
 2. Update `.sops.yaml` to include the public key
@@ -35,10 +23,9 @@ helm plugin install https://github.com/jkroepke/helm-secrets --version v4.6.2
 ```sh
 helm secrets encrypt secrets.yaml.dec > secrets.yaml
 ```
-5. Make sure argocd has the private key. Export it first and then import the private key by creating a kubernetes secret.
+
+5. Make sure argocd has the private key
 
 ```sh
-gpg --armor --export-secret-keys <secret> > key.asc
-
-kubectl -n argocd create secret generic helm-secrets-private-keys --from-file=key.asc
+kubectl -n argocd create secret generic helm-secrets-age-key --from-file=key.txt=../assets/age/key.txt
 ```
