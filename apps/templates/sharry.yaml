@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: jlesage/sharry@sha256:349d0a3526f70b108bf174197cb95c820b606ebd910953d6ccf15608b7bfdf37
+          image: jlesage/sharry@sha256:397e05c54b9717727e2de9c3615b243aad63dc9a5c8b7a9cf50e673dce709148
           ports:
             - containerPort: 9090
           resources:
