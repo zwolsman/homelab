@@ -30,7 +30,7 @@ spec:
             storageClassName: ""
             accessModes:
               - ReadWriteOnce
-            size: 5Gi
+            size: 500Mi
 
         prometheus:
           ingress:
@@ -40,14 +40,14 @@ spec:
               - hosts:
                   - "prometheus"
           prometheusSpec:
-            retentionSize: 50GiB
+            retentionSize: 20GiB
             storageSpec:
               volumeClaimTemplate:
                 spec:
-                  accessModes: [ "ReadWriteOnce" ]
+                  accessModes: ["ReadWriteOnce"]
                   resources:
                     requests:
-                      storage: 50Gi
+                      storage: 20Gi
   destination:
     namespace: monitoring
     server: https://kubernetes.default.svc
