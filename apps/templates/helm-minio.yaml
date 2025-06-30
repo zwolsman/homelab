@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: minio
+  namespace: argocd
+spec:
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+  sources:
+    - repoURL: "https://charts.min.io/"
+      chart: minio
+      targetRevision: 5.4.0
+      helm:
+        valuesObject:
+          mode: standalone
+          replicas: 4
+          persistence:
+            size: 10Gi
+          ingress:
+            enabled: true
+            ingressClassName: tailscale
+            hosts:
+              - minio
+            tls:
+              - hosts:
+                  - minio
+          consoleIngress:
+            enabled: true
+            ingressClassName: tailscale
+            hosts:
+              - minio-console
+            tls:
+              - hosts:
+                  - minio-console
+          resources:
+            requests:
+              memory: 512Mi
+          metrics:
+            serviceMonitor:
+              enabled: true
+              includeNode: true
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: minio
