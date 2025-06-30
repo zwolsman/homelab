@@ -27,6 +27,10 @@ spec:
               service: http://sharry-svc.sharry.svc.cluster.local
             - hostname: "*.murfzw.online"
               service: http://echo-svc.echo.svc.cluster.local
+            - hostname: "access.ptcgl.online"
+              service: http://auth-server-svc.ptcgl.svc.cluster.local
+            - hostname: "ptcgl.online"
+              service: http://frontend-svc.ptcgl.svc.cluster.local
   destination:
     namespace: cloudflare-tunnel
     server: https://kubernetes.default.svc
