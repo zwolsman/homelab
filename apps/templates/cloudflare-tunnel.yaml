@@ -31,6 +31,8 @@ spec:
               service: http://auth-server-svc.ptcgl.svc.cluster.local
             - hostname: "ptcgl.online"
               service: http://frontend-svc.ptcgl.svc.cluster.local
+            - hostname: "assets.ptcgl.online"
+              service: http://assets-svc.ptcgl.svc.cluster.local
   destination:
     namespace: cloudflare-tunnel
     server: https://kubernetes.default.svc
