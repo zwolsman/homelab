@@ -43,6 +43,8 @@ spec:
             serviceMonitor:
               enabled: true
               includeNode: true
+              additionalLabels:
+                release: prometheus
   destination:
     server: "https://kubernetes.default.svc"
     namespace: minio
