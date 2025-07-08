@@ -30,7 +30,7 @@ spec:
             storageClassName: ""
             accessModes:
               - ReadWriteOnce
-            size: 500Mi
+            size: 5Gi
 
         prometheus:
           ingress:
