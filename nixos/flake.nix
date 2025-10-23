@@ -46,7 +46,7 @@
         };
 
         homelab-3 = {
-          stateVersion = "23.11"; # TODO: Verify state version
+          stateVersion = "25.05";
           systemType = "server";
           roles = [
             /kubernetes
