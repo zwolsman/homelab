@@ -1,4 +1,9 @@
 {
+  user,
+  pkgs,
+  ...
+}:
+{
   disko.devices = {
     disk = {
       vdb = {
@@ -11,7 +16,7 @@
               priority = 1;
               name = "ESP";
               start = "1M";
-              end = "128M";
+              end = "512M";
               type = "EF00";
               content = {
                 type = "filesystem";
@@ -37,7 +42,7 @@
                     mountpoint = "/home";
                   };
                   # Sub(sub)volume doesn't need a mountpoint as its parent is mounted
-                  "/home/marv" = { };
+                  "/home/${user}" = { };
                   # Parent is not mounted so the mountpoint must be set
                   "/nix" = {
                     mountOptions = [
