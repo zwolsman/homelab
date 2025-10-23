@@ -1,6 +1,4 @@
 {
-  user,
-  pkgs,
   ...
 }:
 {
@@ -41,8 +39,6 @@
                     mountOptions = [ "compress=zstd" ];
                     mountpoint = "/home";
                   };
-                  # Sub(sub)volume doesn't need a mountpoint as its parent is mounted
-                  "/home/${user}" = { };
                   # Parent is not mounted so the mountpoint must be set
                   "/nix" = {
                     mountOptions = [
