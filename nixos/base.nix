@@ -1,7 +1,4 @@
 {
-  inputs,
-  config,
-  stateVersion,
   pkgs,
   ...
 }:
@@ -61,5 +58,5 @@ in
   networking.networkmanager.enable = true;
 
   # If we change this things will be sad
-  system.stateVersion = stateVersion;
+  system.stateVersion = "25.05";
 }
