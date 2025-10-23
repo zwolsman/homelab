@@ -2,6 +2,7 @@
   inputs,
   nixpkgs,
   hostName,
+  stateVersion,
   user,
   systemType ? "server",
   roles ? [ ],
@@ -47,12 +48,11 @@ let
         # Add all our specified roles
         ++ mkNixRoles roles;
 
-      #mkNixRoles hostName roles;
-
       specialArgs = {
         inherit inputs;
         inherit user;
         inherit hostName;
+        inherit stateVersion;
       };
     };
 in
