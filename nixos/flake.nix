@@ -22,33 +22,42 @@
       ...
     }@inputs:
     let
-      nodes = [
-        "homelab-0"
-        "homelab-1"
-        "homelab-2"
-      ];
+      inherit (self) outputs;
+
+      # Set the primary/default user. Can be overwritten on a system level
+      user = "marv";
+
+      commonInherits = {
+        inherit (nixpkgs) lib;
+        inherit
+          inputs
+          outputs
+          nixpkgs
+          ;
+      };
+
+      systems = {
+        homelab-0 = {
+          systemType = "server";
+          roles = [
+            /kubernetes
+          ];
+        };
+      };
+
+      mkSystem =
+        host: system:
+        import ./hosts.nix (
+          commonInherits
+          // {
+            hostName = "${host}";
+            user = system.user or user;
+            serverType = system.serverType or null;
+          }
+          // system
+        );
     in
     {
-      nixosConfigurations = builtins.listToAttrs (
-        map (name: {
-          name = name;
-          value = nixpkgs.lib.nixosSystem {
-            specialArgs = {
-              meta = {
-                hostname = name;
-              };
-            };
-            system = "x86_64-linux";
-            modules = [
-              # Modules
-              disko.nixosModules.disko
-              sops-nix.nixosModules.sops
-              ./hardware-configuration.nix
-              ./disko-configuration.nix
-              ./configuration.nix
-            ];
-          };
-        }) nodes
-      );
+      nixosConfigurations = nixpkgs.lib.mapAttrs mkSystem systems;
     };
 }
