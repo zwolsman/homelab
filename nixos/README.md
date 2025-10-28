@@ -46,3 +46,8 @@ $ DOCKER_HOST=unix:///Users/mzwolsman/.colima/vm/docker.sock ./inside-docker <co
 ```sh
 sops --encrypt --input-type yaml --output-type yaml secrets.yaml.dec > secrets.yaml
 ```
+
+TODO:
+
+- [ ] Deploy user SSH key
+- [ ] Update github to use dpeloy user
