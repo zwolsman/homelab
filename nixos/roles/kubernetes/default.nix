@@ -1,5 +1,5 @@
 {
-  # config,
+  config,
   pkgs,
   hostName,
   ...
@@ -17,7 +17,7 @@
   services.k3s = {
     enable = true;
     role = "server"; # TODO: extract role
-    # tokenFile = config.sops.secrets.k3s-token.path; TODO
+    tokenFile = config.sops.secrets.k3s-token.path;
     extraFlags = toString (
       [
         "--write-kubeconfig-mode \"0644\""
