@@ -11,6 +11,11 @@
     enableBashCompletion = true;
     enableCompletion = true;
     autosuggestions.enable = true;
+
+    shellAliases = {
+      nr = "sudo nixos-rebuild switch --flake '.#$(hostname)'";
+    };
+
     ohMyZsh = {
       enable = true;
       theme = "kafeitu";
