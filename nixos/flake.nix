@@ -52,6 +52,14 @@
             /kubernetes
           ];
         };
+
+        homelab-4 = {
+          stateVersion = "25.05";
+          systemType = "server";
+          roles = [
+            /kubernetes
+          ];
+        };
       };
 
       mkSystem =
