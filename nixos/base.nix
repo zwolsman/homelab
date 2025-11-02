@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   ...
 }:
 #
@@ -11,9 +12,6 @@ let
   timezone = "Europe/Amsterdam";
 in
 {
-  imports = [
-    ./disko-configuration.nix
-  ];
 
   # ==============================
   # General System Config
@@ -59,4 +57,5 @@ in
 
   # If we change this things will be sad
   system.stateVersion = "25.05";
+  # system.stateVersion = lib.mkDefault lib.trivial.release;
 }
