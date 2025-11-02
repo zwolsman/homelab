@@ -56,6 +56,5 @@ in
   networking.networkmanager.enable = true;
 
   # If we change this things will be sad
-  system.stateVersion = "25.05";
-  # system.stateVersion = lib.mkDefault lib.trivial.release;
+  system.stateVersion = lib.mkDefault lib.trivial.release;
 }

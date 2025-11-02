@@ -1,4 +1,4 @@
-{ lib, stateVersion, ... }:
+{ stateVersion, ... }:
 {
   imports = [
     ../../users/server_admin.nix
@@ -43,5 +43,5 @@
     ];
   };
 
-  system.stateVersion = lib.mkForce stateVersion;
+  system.stateVersion = stateVersion;
 }
