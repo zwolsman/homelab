@@ -11,11 +11,16 @@
     enableBashCompletion = true;
     enableCompletion = true;
     autosuggestions.enable = true;
+    shellInit = 
+      ''
+        PROMPT='$(kube_ps1)'$PROMPT
+      '';
     ohMyZsh = {
       enable = true;
       theme = "robbyrussell";
       plugins = [
         "sudo"
+        "kube-ps1"
       ];
     };
 
