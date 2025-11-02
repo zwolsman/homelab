@@ -22,8 +22,8 @@
   # networking.interfaces.eno2.useDHCP = lib.mkDefault true;
   # networking.interfaces.eno3.useDHCP = lib.mkDefault true;
   # networking.interfaces.eno4.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp5s0f0.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp5s0f1.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp6s0f0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp6s0f1.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
