@@ -1,5 +1,5 @@
 {
-  users.users."deploy_user" = {
+  users.users."github" = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     openssh.authorizedKeys.keys = [
@@ -10,7 +10,7 @@
   security.sudo = {
     extraRules = [
       {
-        users = [ "deploy_user" ];
+        users = [ "github" ];
         commands = [
           {
             command = "ALL";

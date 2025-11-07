@@ -2,12 +2,12 @@
 {
   imports = [
     ../../users/server_admin.nix
-    ../../users/deploy_user.nix
+    ../../users/github.nix
   ];
 
   nix.settings.trusted-users = [
     "server_admin"
-    "deploy_user"
+    "github"
   ];
 
   services.openssh = {
