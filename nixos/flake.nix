@@ -38,7 +38,20 @@
 
       systems = {
         homelab-0 = {
-          stateVersion = "23.11";
+          systemType = "server";
+          roles = [
+            /kubernetes
+          ];
+        };
+
+        homelab-1 = {
+          systemType = "server";
+          roles = [
+            /kubernetes
+          ];
+        };
+
+        homelab-2 = {
           systemType = "server";
           roles = [
             /kubernetes
@@ -46,7 +59,6 @@
         };
 
         homelab-3 = {
-          stateVersion = "25.05";
           systemType = "server";
           roles = [
             /kubernetes
@@ -54,7 +66,6 @@
         };
 
         homelab-4 = {
-          stateVersion = "25.05";
           systemType = "server";
           roles = [
             /kubernetes
@@ -70,7 +81,6 @@
             hostName = "${host}";
             user = system.user or user;
             serverType = system.serverType or null;
-            stateVersion = system.stateVersion;
           }
           // system
         );

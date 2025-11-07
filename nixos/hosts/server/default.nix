@@ -1,4 +1,4 @@
-{ stateVersion, ... }:
+{ ... }:
 {
   imports = [
     ../../users/server_admin.nix
@@ -42,6 +42,4 @@
       31497 # factorio server
     ];
   };
-
-  system.stateVersion = stateVersion;
 }
