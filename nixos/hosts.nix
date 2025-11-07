@@ -2,7 +2,6 @@
   inputs,
   nixpkgs,
   hostName,
-  stateVersion,
   user,
   systemType ? "server",
   roles ? [ ],
@@ -52,7 +51,6 @@ let
         inherit inputs;
         inherit user;
         inherit hostName;
-        inherit stateVersion;
       };
     };
 in
