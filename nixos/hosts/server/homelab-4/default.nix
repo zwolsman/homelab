@@ -8,10 +8,9 @@
   system.stateVersion = "25.05";
 
   hardware.nvidia.package = config.boot.kernelPackages.nvidia_x11_legacy470;
-  hardware.graphics = {
-    enable = true;
-  };
-
+  hardware.graphics.enable = true;
+  hardware.nvidia.datacenter.enable = true;
+  services.xserver.videoDrivers = true;
   hardware.nvidia-container-toolkit.enable = true;
   
   hardware.nvidia = {
