@@ -34,6 +34,12 @@
             "--server https://192.168.1.150:6443" # TODO: extract the boot server
           ]
       )
+      ++ (
+        if hostName == "homelab-4" then
+          [ "--container-runtime-endpoint unix:///run/containerd/containerd.sock" ] # TODO: remove this
+        else
+          [ ]
+      )
     );
     clusterInit = (hostName == "homelab-0");
   };
