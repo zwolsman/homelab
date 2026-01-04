@@ -20,8 +20,10 @@
   boot.kernelModules = [ "nvidia" ];
   virtualisation.docker.enableNvidia = true;
   hardware.nvidia-container-toolkit.enable = true;
+  hardware.nvidia-container-toolkit.mount-nvidia-executables = true;
   environment.systemPackages = with pkgs; [
     nvidia-container-toolkit.tools
+    runc
   ];
   virtualisation.containerd = {
     enable = false;
