@@ -40,6 +40,7 @@
       53 # pihole, dns
       8472 # k3s, flannel
       31497 # factorio server
+      8472 # flannel VXLAN (if using flannel)
     ];
   };
 }
