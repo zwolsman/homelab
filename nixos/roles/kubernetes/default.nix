@@ -16,7 +16,18 @@
 
   services.k3s = {
     enable = true;
-    role = "server"; # TODO: extract role
+    role =
+      if
+        builtins.elem config.networking.hostName [
+          "homelab-0"
+          "homelab-1"
+          "homelab-2"
+        ]
+      then
+        "server"
+      else
+        "agent";
+    serverAddr = if hostName == "homelab-0" then "" else "https://192.168.1.150:6443";
     tokenFile = config.sops.secrets.k3s-token.path;
     extraFlags = toString (
       [
@@ -26,14 +37,6 @@
         "--disable traefik"
         "--disable local-storage"
       ]
-      ++ (
-        if hostName == "homelab-0" then
-          [ ]
-        else
-          [
-            "--server https://192.168.1.150:6443" # TODO: extract the boot server
-          ]
-      )
       ++ (
         if hostName == "homelab-4" then
           [ "--container-runtime-endpoint unix:///run/containerd/containerd.sock" ] # TODO: remove this
