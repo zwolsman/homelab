@@ -30,11 +30,23 @@
     serverAddr = if hostName == "homelab-0" then "" else "https://192.168.1.150:6443";
     tokenFile = config.sops.secrets.k3s-token.path;
     extraFlags = toString (
-      [
-        "--disable servicelb"
-        "--disable traefik"
-        "--disable local-storage"
-      ]
+      (
+        if
+          builtins.elem config.networking.hostName [
+            "homelab-0"
+            "homelab-1"
+            "homelab-2"
+          ]
+        then
+          [
+            "--write-kubeconfig-mode \"0644\""
+            "--disable servicelb"
+            "--disable traefik"
+            "--disable local-storage"
+          ]
+        else
+          [ ]
+      )
       ++ (
         if hostName == "homelab-4" then
           [ "--container-runtime-endpoint unix:///run/containerd/containerd.sock" ] # TODO: remove this
