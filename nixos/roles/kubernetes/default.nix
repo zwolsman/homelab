@@ -16,39 +16,8 @@
 
   services.k3s = {
     enable = true;
-    role =
-      if
-        builtins.elem config.networking.hostName [
-          "homelab-0"
-          "homelab-1"
-          "homelab-2"
-        ]
-      then
-        "server"
-      else
-        "agent";
-
     serverAddr = if hostName == "homelab-0" then "" else "https://192.168.1.150:6443";
     tokenFile = config.sops.secrets.k3s-token.path;
-    extraFlags = toString (
-      (
-        if
-          builtins.elem config.networking.hostName [
-            "homelab-0"
-            "homelab-1"
-            "homelab-2"
-          ]
-        then
-          [
-            "--write-kubeconfig-mode \"0644\""
-            "--disable servicelb"
-            "--disable traefik"
-            "--disable local-storage"
-          ]
-        else
-          [ ]
-      )
-    );
     clusterInit = (hostName == "homelab-0");
   };
 
