@@ -40,35 +40,36 @@
         homelab-0 = {
           systemType = "server";
           roles = [
-            /kubernetes
+            /kubernetes-server
           ];
         };
 
         homelab-1 = {
           systemType = "server";
           roles = [
-            /kubernetes
+            /kubernetes-server
           ];
         };
 
         homelab-2 = {
           systemType = "server";
           roles = [
-            /kubernetes
+            /kubernetes-server
           ];
         };
 
         homelab-3 = {
           systemType = "server";
           roles = [
-            /kubernetes
+            /kubernetes-agent
           ];
         };
 
         homelab-4 = {
           systemType = "server";
           roles = [
-            /kubernetes
+            /kubernetes-agent
+            /kubernetes-gpu
           ];
         };
       };
