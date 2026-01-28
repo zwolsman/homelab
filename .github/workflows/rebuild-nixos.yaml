@@ -18,7 +18,7 @@ jobs:
     name: Build
     runs-on: self-hosted
     steps:
-      - uses: appleboy/ssh-action@v1.2.4
+      - uses: appleboy/ssh-action@v1.2.5
         with:
           host: ${{ matrix.host }}
           username: ${{ secrets.USERNAME }}
@@ -35,7 +35,7 @@ jobs:
     environment: live
     name: Switch
     steps:
-      - uses: appleboy/ssh-action@v1.2.4
+      - uses: appleboy/ssh-action@v1.2.5
         with:
           host: ${{ matrix.host }}
           username: ${{ secrets.USERNAME }}
