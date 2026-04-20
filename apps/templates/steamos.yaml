@@ -1,0 +1,48 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: steamos
+  labels:
+    name: steamos
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: steamos
+  namespace: steamos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: steamos
+  template:
+    metadata:
+      labels:
+        app: steamos
+    spec:
+      containers:
+        - name: steamos
+          image: lscr.io/linuxserver/steamos:latest
+          securityContext:
+            privileged: false
+            allowPrivilegeEscalation: false
+            capabilities:
+              add:
+                - SYS_ADMIN
+            seccompProfile:
+              type: Unconfined
+          ports:
+            - containerPort: 3000
+            - containerPort: 3001
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1001"
+            - name: TZ
+              value: "Etc/UTC"
+            - name: STARTUP
+              value: "KDE"
+            - name: RESOLUTION
+              value: "1920x1080"

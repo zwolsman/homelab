@@ -16,25 +16,8 @@
 
   services.k3s = {
     enable = true;
-    role = "server"; # TODO: extract role
+    serverAddr = if hostName == "homelab-0" then "" else "https://192.168.1.150:6443";
     tokenFile = config.sops.secrets.k3s-token.path;
-    extraFlags = toString (
-      [
-        "--write-kubeconfig-mode \"0644\""
-        "--cluster-init"
-        "--disable servicelb"
-        "--disable traefik"
-        "--disable local-storage"
-      ]
-      ++ (
-        if hostName == "homelab-0" then
-          [ ]
-        else
-          [
-            "--server https://192.168.1.150:6443" # TODO: extract the boot server
-          ]
-      )
-    );
     clusterInit = (hostName == "homelab-0");
   };
 
