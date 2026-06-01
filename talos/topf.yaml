@@ -1,0 +1,19 @@
+clusterName: homelab
+
+kubernetesVersion: 1.36.0
+talosVersion: 1.13.2
+
+clusterEndpoint: https://192.168.1.171:6443
+schematicId: "@schematics/schematic.yaml"
+
+secretsPath: secrets.enc.yaml
+
+nodes:
+  - host: homelab-4
+    ip: 192.168.1.171
+    role: control-plane
+    schematicId: "@schematics/schematic-poweredge.yaml"
+  - host: homelab-5
+    ip: 192.168.1.210
+    role: control-plane
+    schematicId: "@schematics/schematic-poweredge.yaml"
