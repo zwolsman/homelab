@@ -4,7 +4,7 @@ Contains a collection of all apps in my homelab.
 
 ## Secret notes
 
-1. Generate AGE key (`../assets/age/key.txt`)
+1. Generate AGE key (`../assets/age/helm.txt`)
 
 ```sh
 nix-shell -p age-keygen
@@ -27,5 +27,5 @@ helm secrets encrypt secrets.yaml.dec > secrets.yaml
 5. Make sure argocd has the private key
 
 ```sh
-kubectl -n argocd create secret generic helm-secrets-age-key --from-file=key.txt=../assets/age/key.txt
+kubectl -n argocd create secret generic helm-secrets-age-key --from-file=key.txt=../assets/age/helm.txt
 ```

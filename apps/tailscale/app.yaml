@@ -16,9 +16,6 @@ spec:
     targetRevision: 1.98.4
     helm:
       valuesObject:
-        oauth:
-          clientId: {{ .Values.tailscale.clientId | quote }}
-          clientSecret: {{ .Values.tailscale.clientSecret | quote }}
         apiServerProxyConfig:
           mode: "true"
   destination:
