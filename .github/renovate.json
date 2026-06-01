@@ -26,15 +26,6 @@
       "apps/templates/.+\\.yaml$"
     ]
   },
-  "lockFileMaintenance": {
-    "enabled": true
-  },
-  "nix": {
-    "enabled": true,
-    "fileMatch": [
-      "(^|/)nixos/flake\\.nix$"
-    ]
-  },
   "customManagers": [
     {
       "customType": "regex",
