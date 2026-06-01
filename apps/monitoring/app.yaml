@@ -31,7 +31,8 @@ spec:
             accessModes:
               - ReadWriteOnce
             size: 5Gi
-
+        nodeExporter:
+          enabled: false # TODO: fix for talos
         prometheus:
           ingress:
             enabled: true
