@@ -14,6 +14,3 @@ spec:
     repoURL: https://github.com/zwolsman/homelab
     path: apps
     targetRevision: main
-    helm:
-      valueFiles:
-        - secrets://https://raw.githubusercontent.com/zwolsman/homelab/refs/heads/main/apps/secrets.yaml
