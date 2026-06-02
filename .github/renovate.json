@@ -17,21 +17,21 @@
     }
   ],
   "argocd": {
-    "fileMatch": [
-      "apps/templates/.+\\.yaml$"
+    "managerFilePatterns": [
+      "/apps/templates/.+\\.yaml$/"
     ]
   },
   "kubernetes": {
-    "fileMatch": [
-      "apps/templates/.+\\.yaml$"
+    "managerFilePatterns": [
+      "/apps/templates/.+\\.yaml$/"
     ]
   },
   "customManagers": [
     {
       "customType": "regex",
       "datasourceTemplate": "docker",
-      "fileMatch": [
-        "apps/templates/helm-factorio.yaml$"
+      "managerFilePatterns": [
+        "/apps/templates/helm-factorio.yaml$/"
       ],
       "matchStrings": [
         "#\\s?renovate: image=(?<depName>.*?)\\s+?tag:\\s?\\\"?(?<currentValue>[\\w+\\.\\-]*)(@(?<currentDigest>sha256:[0-9a-f]*))?\\\"?"
