@@ -1,6 +1,0 @@
-customization:
-  systemExtensions:
-    officialExtensions:
-      - siderolabs/bnx2-bnx2x
-      - siderolabs/iscsi-tools
-      - siderolabs/util-linux-tools
