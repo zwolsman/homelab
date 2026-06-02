@@ -26,14 +26,11 @@ talos/
 ├── secrets.enc.yaml                            # SOPS-encrypted cluster secrets
 ├── topf.yaml                                   # topf cluster configuration
 ├── all/                                        # Applied to every node
-├── controlplane/                               # Applied to control plane nodes only
-├── worker/                                     # Applied to worker nodes only
 ├── node
 │   └── node1
 │       └── 01-some-nodespecific-patch.yaml     # Applied to specific node
 └──schematics
-    ├── schematic-poweredge.yaml                # Dell PowerEdge R710 Schematic
-    └── schematic.yaml                          # Generic schematic
+    └── schematic-mini-pc.yaml                  # HP Mini PC schematic
 ```
 
 ## Getting Started
