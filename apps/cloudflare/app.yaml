@@ -23,8 +23,6 @@ spec:
           ingress:
             - hostname: "murfzw.nl"
               service: http://echo-svc.echo.svc.cluster.local
-            - hostname: "sharry.murfzw.online"
-              service: http://sharry-svc.sharry.svc.cluster.local
             - hostname: "*.murfzw.nl"
               service: http://echo-svc.echo.svc.cluster.local
   destination:
