@@ -5,12 +5,24 @@ kubernetesVersion: 1.36.0
 # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
 talosVersion: 1.13.2
 
-clusterEndpoint: https://192.168.1.171:6443
+clusterEndpoint: https://192.168.1.150:6443
 schematicId: "@schematics/schematic.yaml"
 
 secretsPath: secrets.enc.yaml
 
 nodes:
+  - host: homelab-1
+    ip: 192.168.1.150
+    role: control-plane
+    schematicId: "@schematics/schematic-mini-pc.yaml"
+  - host: homelab-2
+    ip: 192.168.1.151
+    role: control-plane
+    schematicId: "@schematics/schematic-mini-pc.yaml"
+  - host: homelab-3
+    ip: 192.168.1.152
+    role: control-plane
+    schematicId: "@schematics/schematic-mini-pc.yaml"
   - host: homelab-4
     ip: 192.168.1.171
     role: control-plane
