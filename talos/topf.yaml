@@ -25,9 +25,9 @@ nodes:
     schematicId: "@schematics/schematic-mini-pc.yaml"
   - host: homelab-4
     ip: 192.168.1.171
-    role: control-plane
-    schematicId: "@schematics/schematic-poweredge.yaml"
+    role: worker
+    schematicId: 821211b1e15e1d9ae6612b869cccc96200690025943c532bb554ab16a2e18616
   - host: homelab-5
     ip: 192.168.1.210
-    role: control-plane
-    schematicId: "@schematics/schematic-poweredge.yaml"
+    role: worker
+    schematicId: 821211b1e15e1d9ae6612b869cccc96200690025943c532bb554ab16a2e18616
