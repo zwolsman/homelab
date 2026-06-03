@@ -18,25 +18,27 @@
   ],
   "argocd": {
     "managerFilePatterns": [
-      "/apps/templates/.+\\.yaml$/"
+      "/apps/.+\\.yaml$/"
     ]
   },
   "kubernetes": {
     "managerFilePatterns": [
-      "/apps/templates/.+\\.yaml$/"
+      "/apps/.+\\.yaml$/"
     ]
   },
   "customManagers": [
     {
       "customType": "regex",
-      "datasourceTemplate": "docker",
-      "managerFilePatterns": [
-        "/apps/templates/helm-factorio.yaml$/"
+      "description": [
+        "Process custom dependencies"
+      ],
+      "fileMatch": [
+        "(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"
       ],
       "matchStrings": [
-        "#\\s?renovate: image=(?<depName>.*?)\\s+?tag:\\s?\\\"?(?<currentValue>[\\w+\\.\\-]*)(@(?<currentDigest>sha256:[0-9a-f]*))?\\\"?"
+        "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( repository=(?<registryUrl>\\S+))?\\n.+: (&\\S+\\s)?(?<currentValue>\\S+)"
       ],
-      "versioningTemplate": "loose"
+      "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}"
     }
   ]
 }
