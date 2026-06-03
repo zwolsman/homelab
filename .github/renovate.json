@@ -33,7 +33,7 @@
         "Process custom dependencies"
       ],
       "managerFilePatterns": [
-        "/(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$/"
+        "/.+\\.ya?ml(?:\\.j2)?$/"
       ],
       "matchStrings": [
         "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( repository=(?<registryUrl>\\S+))?\\n.+: (&\\S+\\s)?(?<currentValue>\\S+)"
