@@ -11,20 +11,24 @@ spec:
     syncOptions:
       - CreateNamespace=true
   source:
-    repoURL: https://cloudflare.github.io/helm-charts
-    chart: cloudflare-tunnel
-    targetRevision: 0.3.2
+    repoURL: https://community-charts.github.io/helm-charts
+    chart: cloudflared
+    targetRevision: 2.2.8
     helm:
       valuesObject:
-        cloudflare:
-          tunnelName: "homelab"
-          tunnelId: "e619bd2a-64b8-48b0-a9d0-cda9dfa7d2b0"
-          secretName: "tunnel-credentials"
-          ingress:
-            - hostname: "murfzw.nl"
-              service: http://echo-svc.echo.svc.cluster.local
-            - hostname: "*.murfzw.nl"
-              service: http://echo-svc.echo.svc.cluster.local
+        tunnelConfig:
+          name: "homelab"
+        tunnelSecrets:
+          existingPemFileSecret:
+            name: "cf-secret"
+          existingConfigJsonFileSecret:
+            name: "cf-secret"
+        ingress:
+          - hostname: "murfzw.nl"
+            service: http://echo-svc.echo.svc.cluster.local
+          - hostname: "*.murfzw.nl"
+            service: http://echo-svc.echo.svc.cluster.local
+          - service: http_status:404
   destination:
     namespace: cloudflare-tunnel
     server: https://kubernetes.default.svc
