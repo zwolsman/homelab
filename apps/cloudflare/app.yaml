@@ -23,6 +23,7 @@ spec:
             name: "cf-secret"
           existingConfigJsonFileSecret:
             name: "cf-secret"
+        tolerations: []
         ingress:
           - hostname: "murfzw.nl"
             service: http://echo-svc.echo.svc.cluster.local
