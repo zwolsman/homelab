@@ -1,0 +1,105 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: netbox
+  namespace: argocd
+spec:
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+  source:
+    repoURL: https://charts.netbox.oss.netboxlabs.com/
+    chart: netbox
+    targetRevision: 8.3.13
+    helm:
+      valuesObject:
+        replicaCount: 1
+        allowedHosts:
+          - "*"
+
+        ingress:
+          enabled: true
+          className: tailscale
+          hosts:
+            - host: netbox
+              paths:
+                - /
+          tls:
+            - hosts:
+                - netbox
+
+        existingSecret: netbox-config
+        superuser:
+          existingSecret: netbox-superuser
+        extraConfig:
+          - secret:
+            secretName: netbox-s3
+            items: []
+            optional: false
+
+        persistence:
+          enabled: false
+
+        storages:
+          default:
+            BACKEND: storages.backends.s3.S3Storage
+            OPTIONS:
+              bucket_name: netbox
+              location: media
+              endpoint_url: https://rustfs.tailf6e87b.ts.net/
+              region_name: "eu-west-4"
+              # use_ssl: false
+          staticfiles:
+            BACKEND: storages.backends.s3.S3Storage
+            OPTIONS:
+              bucket_name: netbox
+              location: static
+              endpoint_url: https://rustfs.tailf6e87b.ts.net/
+              region_name: "eu-west-4"
+              # use_ssl: false
+          scripts:
+            BACKEND: storages.backends.s3.S3Storage
+            OPTIONS:
+              bucket_name: netbox
+              location: scripts
+              endpoint_url: https://rustfs.tailf6e87b.ts.net/
+              region_name: "eu-west-4"
+              # use_ssl: false
+
+        worker:
+          replicaCount: 1
+
+        metrics:
+          enabled: true
+          serviceMonitor:
+            enabled: true
+            additionalLabels:
+              release: prometheus
+
+        postgresql:
+          enabled: true
+          architecture: standalone
+          auth:
+            existingSecret: netbox-postgresql
+          primary:
+            persistence:
+              storageClass: longhorn
+              size: 8Gi
+            resourcesPreset: small
+
+        valkey:
+          enabled: true
+          architecture: standalone
+          auth:
+            existingSecret: netbox-valkey
+          master:
+            persistence:
+              storageClass: longhorn
+              size: 1Gi
+            resourcesPreset: nano
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: netbox

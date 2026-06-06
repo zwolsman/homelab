@@ -3,4 +3,3 @@ kind: Kustomization
 resources:
   - app.yaml
   - sealed_secret.yaml
-  - bucket_job.yaml
