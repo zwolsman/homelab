@@ -1,0 +1,55 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rustfs
+  namespace: argocd
+spec:
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+  source:
+    repoURL: https://github.com/rustfs/rustfs
+    path: helm/rustfs
+    targetRevision: 1.0.0-beta.7
+    helm:
+      valuesObject:
+        replicaCount: 1
+        mode:
+          standalone:
+            enabled: true
+          distributed:
+            enabled: false
+        secret:
+          existingSecret: rustfs-secret
+        storageclass:
+          name: longhorn
+          dataStorageSize: 10Gi # bucket store; expand the rustfs-data PVC later
+          logStorageSize: 1Gi
+        service:
+          type: ClusterIP
+        ingress:
+          enabled: true
+          className: tailscale
+          hosts:
+            - host: rustfs
+              paths:
+                - path: /
+                  pathType: Prefix
+          tls:
+            enabled: true
+            existingSecret:
+              enabled: true # Tailscale provisions and manages the cert secret
+              name: rustfs-tls
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: rustfs

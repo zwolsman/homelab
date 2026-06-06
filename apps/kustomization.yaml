@@ -7,5 +7,6 @@ resources:
   - echo/
   - longhorn/
   - monitoring/
+  - rustfs/
   - sealed-secrets/
   - tailscale/
