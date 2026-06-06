@@ -13,10 +13,14 @@ spec:
   source:
     repoURL: https://github.com/rustfs/rustfs
     path: helm/rustfs
+    # renovate: datasource=github-releases packageName=rustfs/rustfs
     targetRevision: 1.0.0-beta.7
     helm:
       valuesObject:
         replicaCount: 1
+        config:
+          rustfs:
+            region: "eu-west-4"
         mode:
           standalone:
             enabled: true
@@ -26,7 +30,7 @@ spec:
           existingSecret: rustfs-secret
         storageclass:
           name: longhorn
-          dataStorageSize: 10Gi # bucket store; expand the rustfs-data PVC later
+          dataStorageSize: 10Gi
           logStorageSize: 1Gi
         service:
           type: ClusterIP
@@ -41,15 +45,8 @@ spec:
           tls:
             enabled: true
             existingSecret:
-              enabled: true # Tailscale provisions and manages the cert secret
+              enabled: true
               name: rustfs-tls
-        resources:
-          requests:
-            cpu: 100m
-            memory: 256Mi
-          limits:
-            cpu: 500m
-            memory: 512Mi
   destination:
     server: https://kubernetes.default.svc
     namespace: rustfs
