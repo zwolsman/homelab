@@ -6,7 +6,6 @@ resources:
   - docker-registry/
   - echo/
   - longhorn/
-  - minio/
   - monitoring/
   - sealed-secrets/
   - tailscale/
