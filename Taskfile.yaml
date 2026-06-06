@@ -1,0 +1,11 @@
+version: "3"
+
+vars:
+  SEALED_SECRETS_NAMESPACE: kube-system
+  SEALED_SECRETS_CONTROLLER: sealed-secrets-controller
+
+includes:
+  app:
+    taskfile: ./tasks/app.yaml
+  secrets:
+    taskfile: ./tasks/secrets.yaml
