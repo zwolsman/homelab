@@ -1,4 +1,5 @@
 secret.yaml
 .idea
+.vscode
 assets
 .DS_Store

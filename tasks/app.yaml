@@ -1,0 +1,12 @@
+version: "3"
+
+tasks:
+  deploy:
+    desc: "Deploy a specific application. Usage: task app:deploy NAME=my-name"
+    preconditions:
+      - sh: command -v kubectl
+        msg: "kubectl is not installed or not in PATH"
+    vars:
+      OUTPUT: '{{.OUTPUT | default (printf "%s-sealed-secret.yaml" .NAME)}}'
+    cmds:
+      - kubectl kustomize apps/{{.NAME}} | kubectl apply -f -
