@@ -6,6 +6,7 @@ resources:
   - docker-registry/
   - echo/
   - longhorn/
+  - metric-server/
   - monitoring/
   - netbox/
   - rustfs/
