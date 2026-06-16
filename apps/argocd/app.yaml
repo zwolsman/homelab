@@ -10,45 +10,47 @@ spec:
       prune: true
     syncOptions:
       - CreateNamespace=true
-  source:
-    repoURL: https://argoproj.github.io/argo-helm
-    chart: argo-cd
-    targetRevision: 9.5.21
-    helm:
-      valuesObject:
-        global:
-          domain: argocd.home
-
-        configs:
-          params:
-            server.insecure: true
-        repoServer:
-          metrics: &metrics
-            enabled: true
-            serviceMonitor:
+  sources:
+    - repoURL: https://argoproj.github.io/argo-helm
+      chart: argo-cd
+      targetRevision: 9.5.21
+      helm:
+        valuesObject:
+          global:
+            domain: argocd.home
+          configs:
+            params:
+              server.insecure: true
+          repoServer:
+            metrics: &metrics
               enabled: true
-              additionalLabels:
-                release: prometheus
-        server:
-          ingress:
-            enabled: true
-            ingressClassName: tailscale
-            tls: true
-            extraTls:
-              - hosts:
-                  - argocd
-          metrics: *metrics
-        controller:
-          metrics: *metrics
-        applicationSet:
-          metrics: *metrics
-        notifications:
-          metrics: *metrics
-        redis:
-          automountServiceAccountToken: true
-          serviceAccount:
-            create: true
-            name: "argocd-redis"
+              serviceMonitor:
+                enabled: true
+                additionalLabels:
+                  release: prometheus
+          server:
+            ingress:
+              enabled: true
+              ingressClassName: tailscale
+              tls: true
+              extraTls:
+                - hosts:
+                    - argocd
+            metrics: *metrics
+          controller:
+            metrics: *metrics
+          applicationSet:
+            metrics: *metrics
+          notifications:
+            metrics: *metrics
+          redis:
+            automountServiceAccountToken: true
+            serviceAccount:
+              create: true
+              name: "argocd-redis"
+    - repoURL: https://argoproj.github.io/argo-helm
+      chart: argocd-image-updater
+      targetRevision: 1.2.1
   destination:
     namespace: argocd
     server: https://kubernetes.default.svc
