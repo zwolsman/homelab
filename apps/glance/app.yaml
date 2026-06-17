@@ -30,8 +30,12 @@ spec:
           envFrom:
             - secretRef:
                 name: glance-secrets
-            - secretRef:
-                name: glance-k8s-token
+          env:
+            - name: K8S_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: glance-k8s-token
+                  key: token
           glance:
             pages:
               - name: Home
@@ -326,7 +330,7 @@ spec:
                         cache: 5m
                         url: https://kubernetes.default.svc/apis/argoproj.io/v1alpha1/applications
                         headers:
-                          Authorization: Bearer {{ token }}
+                          Authorization: Bearer ${K8S_TOKEN}
                         allow-insecure: true
                         template: |
                           {{- $collapseAfter := .Options.IntOr "collapse-after" 7 -}}
