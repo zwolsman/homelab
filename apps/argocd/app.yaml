@@ -52,7 +52,7 @@ spec:
               name: "argocd-redis"
     - repoURL: https://argoproj.github.io/argo-helm
       chart: argocd-image-updater
-      targetRevision: 1.2.1
+      targetRevision: 1.2.2
   destination:
     namespace: argocd
     server: https://kubernetes.default.svc
