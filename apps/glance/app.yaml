@@ -1,0 +1,371 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: glance
+  namespace: argocd
+spec:
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+  sources:
+    - repoURL: ghcr.io/lukasdietrich/glance-k8s/chart
+      chart: glance
+      targetRevision: v1.1.0
+      helm:
+        valuesObject:
+          ingress:
+            enabled: true
+            className: tailscale
+            hosts:
+              - host: dashboard
+                paths:
+                  - path: /
+                    pathType: ImplementationSpecific
+            tls:
+              - hosts:
+                  - "dashboard"
+          envFrom:
+            - secretRef:
+                name: glance-secrets
+            - secretRef:
+                name: glance-k8s-token
+          glance:
+            pages:
+              - name: Home
+                # Optionally, if you only have a single page you can hide the desktop navigation for a cleaner look
+                # hide-desktop-navigation: true
+                columns:
+                  - size: small
+                    widgets:
+                      - type: calendar
+                        first-day-of-week: monday
+
+                      - type: rss
+                        limit: 10
+                        collapse-after: 3
+                        cache: 12h
+                        feeds:
+                          - url: https://selfh.st/rss/
+                            title: selfh.st
+                            limit: 4
+                          - url: https://tweakers.net/feeds/mixed.xml
+                            title: Tweakers
+                          - url: https://www.nu.nl/rss
+                            title: Nu.nl
+                      - type: twitch-channels
+                        channels:
+                          - theprimeagen
+                          - Nightblue3
+
+                  - size: full
+                    widgets:
+                      - type: group
+                        widgets:
+                          - type: hacker-news
+                          - type: lobsters
+
+                      - type: videos
+                        channels:
+                          - UCXuqSBlHAE6Xw-yeJA0Tunw # Linus Tech Tips
+                          - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
+                          - UCsBjURrPoezykLs9EqgamOA # Fireship
+                          - UCBJycsmduvYEL83R_U4JriQ # Marques Brownlee
+                          - UCHnyfMqiRRG1u-2MsSQLbXA # Veritasium
+
+                  - size: small
+                    widgets:
+                      - type: weather
+                        location: Amsterdam, The Netherlands
+                        units: metric
+                        hour-format: 24h
+                      - type: markets
+                        markets:
+                          - symbol: AAPL
+                            name: Apple
+                          - symbol: SPY
+                            name: S&P 500
+                          - symbol: BTC-USD
+                            name: Bitcoin
+                          - symbol: ETH-USD
+                            name: Ethereum
+
+                      - type: extension
+                        url: http://glance-glance-k8s/extension/nodes
+                        allow-potentially-dangerous-html: true
+                        cache: 1s
+              - name: System
+                columns:
+                  - size: small
+                    widgets:
+                      - type: custom-api
+                        title: Tailscale Devices
+                        title-url: https://login.tailscale.com/admin/machines
+                        url: https://api.tailscale.com/api/v2/tailnet/-/devices
+                        headers:
+                          Authorization: Bearer ${TAILSCALE_API_KEY}
+                        cache: 10m
+                        options:
+
+                        template: |
+                          <style>
+                            .device-info-container-tailscale {
+                              position: relative;
+                              overflow: hidden;
+                              height: 1.5em;
+                            }
+
+                            .device-info-tailscale {
+                              display: flex;
+                              transition: transform 0.2s ease, opacity 0.2s ease;
+                            }
+
+                            .device-ip-tailscale {
+                              position: absolute;
+                              top: 0;
+                              left: 0;
+                              transform: translateY(-100%);
+                              opacity: 0;
+                              transition: transform 0.2s ease, opacity 0.2s ease;
+                            }
+
+                            .device-info-container-tailscale:hover .device-info-tailscale {
+                              transform: translateY(100%);
+                              opacity: 0;
+                            }
+
+                            .device-info-container-tailscale:hover .device-ip-tailscale {
+                              transform: translateY(0);
+                              opacity: 1;
+                            }
+
+                            .update-indicator-tailscale {
+                              width: 8px;
+                              height: 8px;
+                              border-radius: 50%;
+                              background-color: var(--color-primary);
+                              display: inline-block;
+                              margin-left: 4px;
+                              vertical-align: middle;
+                            }
+
+                            .offline-indicator-tailscale {
+                              width: 8px;
+                              height: 8px;
+                              border-radius: 50%;
+                              background-color: var(--color-negative);
+                              display: inline-block;
+                              margin-left: 4px;
+                              vertical-align: middle;
+                            }
+
+                            .device-name-container-tailscale {
+                              display: flex;
+                              align-items: center;
+                              gap: 8px;
+                            }
+
+                            .indicators-container-tailscale {
+                              display: flex;
+                              align-items: center;
+                              gap: 4px;
+                            }
+                          </style>
+                          <ul class="list list-gap-10 collapsible-container" data-collapse-after="{{ .Options.IntOr "collapseAfter" 3 }}">
+                            {{ range .JSON.Array "devices" }}
+                            <li>
+                              <div class="flex items-center gap-10">
+                                <div class="device-name-container-tailscale grow">
+                                  <span class="size-h4 block text-truncate color-primary">
+                                    {{ findMatch "^([^.]+)" (.String "name") }}
+                                  </span>
+                                  <div class="indicators-container-tailscale">
+                                    {{ if and (not ($.Options.BoolOr "disableUpdateIndicator" false)) (.Bool "updateAvailable") }}
+                                    <span class="update-indicator-tailscale" data-popover-type="text" data-popover-text="Update Available"></span>
+                                    {{ end }}
+
+                                    {{ if not ($.Options.BoolOr "disableOfflineIndicator" false) }}
+                                    {{ $lastSeen := .String "lastSeen" | parseTime "rfc3339" }}
+                                    {{ if not ($lastSeen.After (offsetNow "-10s")) }}
+                                    {{ $lastSeenTimezoned := $lastSeen.In now.Location }}
+                                    <span class="offline-indicator-tailscale" data-popover-type="text"
+                                      data-popover-text="Offline - Last seen {{ $lastSeenTimezoned.Format " Jan 2 3:04pm" }}"></span>
+                                    {{ end }}
+                                    {{ end }}
+
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="device-info-container-tailscale">
+                                <ul class="list-horizontal-text device-info-tailscale">
+                                  <li>{{ .String "os" }}</li>
+                                  <li>
+                                    {{ if and ($.Options.BoolOr "prioritiseTags" false) (.Exists "tags.0") }}
+                                      {{ trimPrefix "tag:" (.String "tags.0") }}
+                                    {{ else }}
+                                      {{ .String "user" }}
+                                    {{ end }}
+                                  </li>
+                                </ul>
+                                <div class="device-ip-tailscale">
+                                  {{ .String "addresses.0"}}
+                                </div>
+                              </div>
+                            </li>
+                            {{ end }}
+                          </ul>
+                      - type: repository
+                        repository: zwolsman/homelab
+                        pull-requests-limit: 5
+                        issues-limit: 3
+                        commits-limit: 3
+                      - type: custom-api
+                        title: Longhorn Storage
+                        cache: 5m
+                        url: http://longhorn-frontend.longhorn-system.svc.cluster.local/v1/nodes
+                        template: |
+                          {{- $totalMax := 0.0 -}}
+                          {{- $totalAvail := 0.0 -}}
+                          {{- $totalScheduled := 0.0 -}}
+                          {{- $totalReserved := 0.0 -}}
+                          {{- range .JSON.Array "data" -}}
+                            {{- range .Array "disks.@values" -}}
+                              {{- $totalMax       = add $totalMax       (.Int "storageMaximum"  | toFloat) -}}
+                              {{- $totalAvail     = add $totalAvail     (.Int "storageAvailable"| toFloat) -}}
+                              {{- $totalScheduled = add $totalScheduled (.Int "storageScheduled"| toFloat) -}}
+                              {{- $totalReserved  = add $totalReserved  (.Int "storageReserved" | toFloat) -}}
+                            {{- end -}}
+                          {{- end -}}
+                          {{- $gib := 1073741824.0 -}}
+                          {{- $schedPct := mul (div $totalScheduled $totalMax) 100.0 -}}
+                          {{- $usedPct  := mul (div (sub $totalMax $totalAvail) $totalMax) 100.0 -}}
+                          <div class="flex flex-column gap-10">
+                            <div>
+                              <div class="flex justify-between size-h5 margin-bottom-5">
+                                <span class="color-subdue">Scheduled</span>
+                                <span>{{ div $totalScheduled $gib | printf "%.1f" }} / {{ div $totalMax $gib | printf "%.1f" }} GiB</span>
+                              </div>
+                          <div class="progress-bar">
+                                <div class="progress-value" style="--percent: {{ printf "%.0f" $schedPct }}"></div>
+                              </div>
+                            </div>
+                            <div>
+                              <div class="flex justify-between size-h5 margin-bottom-5">
+                                <span class="color-subdue">Used</span>
+                                <span>{{ div (sub $totalMax $totalAvail) $gib | printf "%.1f" }} / {{ div $totalMax $gib | printf "%.1f" }} GiB</span>
+                              </div>
+                            <div class="progress-bar">
+                              <div class="progress-value" style="--percent: {{ printf "%.0f" $usedPct }}"></div>
+                            </div>
+                            </div>
+                            <div class="flex flex-column gap-3 margin-top-5">
+                              <div class="flex justify-between size-h5">
+                                <span class="color-subdue">Available</span>
+                                <span>{{ div $totalAvail $gib | printf "%.1f" }} GiB</span>
+                              </div>
+                              <div class="flex justify-between size-h5">
+                                <span class="color-subdue">Reserved</span>
+                                <span>{{ div $totalReserved $gib | printf "%.1f" }} GiB</span>
+                              </div>
+                            </div>
+                          </div>
+                      - type: custom-api
+                        title: Longhorn Volumes
+                        cache: 5m
+                        url: http://longhorn-frontend.longhorn-system.svc.cluster.local/v1/volumes
+                        template: |
+                          {{- $collapseAfter := .Options.IntOr "collapse-after" 7 -}}
+                          <ul class="list list-gap-10 collapsible-container" data-collapse-after="{{ $collapseAfter }}">
+                          {{- range .JSON.Array "data" -}}
+                            {{- $name     := .String "name" -}}
+                            {{- $pvc      := .String "kubernetesStatus.pvcName" -}}
+                            {{- $node     := .String "controllers.0.hostId" -}}
+                            {{- $state    := .String "state" -}}
+                            {{- $health   := .String "robustness" -}}
+                            {{- $size     := div (.Int "size" | toFloat) 1073741824.0 -}}
+                            {{- $stateColor := "color-subdue" -}}
+                            {{- if eq $state "attached" -}}{{- $stateColor = "color-positive" -}}{{- end -}}
+                            {{- if eq $health "degraded" -}}{{- $stateColor = "color-warning" -}}{{- end -}}
+                            {{- if eq $health "faulted" -}}{{- $stateColor = "color-negative" -}}{{- end -}}
+                            <li>
+                              <div class="flex items-center justify-between gap-10">
+                                <span class="size-h4 color-highlight text-truncate">{{ if $pvc }}{{ $pvc }}{{ else }}{{ $name }}{{ end }}</span>
+                                <span class="size-h5 color-subdue shrink-0">{{ $state }}</span>
+                              </div>
+                              <ul class="list-horizontal-text size-h5 color-subdue">
+                                <li>{{ printf "%.0f" $size }} GiB</li>
+                                {{ if $node }}<li>{{ $node }}</li>{{ end }}
+                                {{ if ne $health "unknown" }}<li class="{{ $stateColor }}">{{ $health }}</li>{{ end }}
+                              </ul>
+                            </li>
+                          {{- end -}}
+                          </ul>
+                        options:
+                          collapse-after: 7
+                  - size: full
+                    widgets:
+                      - type: extension
+                        url: http://glance-glance-k8s/extension/apps
+                        allow-potentially-dangerous-html: true
+                        cache: 1s
+                        parameters:
+                          show-if: |
+                            namespace != "kube-system" and
+                            ("glance/hide" not in annotations || annotations["glance/hide"] != "true")
+
+                  - size: small
+                    widgets:
+                      - type: extension
+                        url: http://glance-glance-k8s/extension/nodes
+                        allow-potentially-dangerous-html: true
+                        cache: 1s
+                      - type: custom-api
+                        title: ArgoCD Apps
+                        cache: 5m
+                        url: https://kubernetes.default.svc/apis/argoproj.io/v1alpha1/applications
+                        headers:
+                          Authorization: Bearer {{ token }}
+                        allow-insecure: true
+                        template: |
+                          {{- $collapseAfter := .Options.IntOr "collapse-after" 7 -}}
+                          <ul class="list list-gap-10 collapsible-container" data-collapse-after="{{ $collapseAfter }}">
+                          {{- range .JSON.Array "items" -}}
+                            {{- $name       := .String "metadata.name" -}}
+                            {{- $version    := .String "status.sync.revision" -}}
+                            {{- $syncStatus := .String "status.sync.status" -}}
+                            {{- $health     := .String "status.health.status" -}}
+                            {{- $syncedAt   := .String "status.operationState.finishedAt" -}}
+                            {{- $healthColor := "color-subdue" -}}
+                            {{- if eq $health "Healthy" -}}{{- $healthColor = "color-positive" -}}{{- end -}}
+                            {{- if eq $health "Degraded" -}}{{- $healthColor = "color-negative" -}}{{- end -}}
+                            {{- if eq $health "Progressing" -}}{{- $healthColor = "color-warning" -}}{{- end -}}
+                            {{- $syncColor := "color-subdue" -}}
+                            {{- if eq $syncStatus "Synced" -}}{{- $syncColor = "color-positive" -}}{{- end -}}
+                            {{- if eq $syncStatus "OutOfSync" -}}{{- $syncColor = "color-negative" -}}{{- end -}}
+                            <li>
+                              <div class="flex items-center justify-between gap-10">
+                                <span class="size-h4 color-highlight text-truncate">{{ $name }}</span>
+                                <span class="size-h5 {{ $healthColor }} shrink-0">{{ $health }}</span>
+                              </div>
+                              <ul class="list-horizontal-text size-h5 color-subdue">
+                                <li class="{{ $syncColor }}">{{ $syncStatus }}</li>
+                                {{ if and $version (ge (len $version) 7) }}<li title="{{ $version }}">{{ slice $version 0 7 }}</li>{{ end }}
+                                {{ if $syncedAt }}
+                                <li>
+                                  <span {{ $syncedAt | parseTime "RFC3339" | toRelativeTime }}></span>
+                                </li>
+                                {{ end }}
+                              </ul>
+                            </li>
+                          {{- end -}}
+                          </ul>
+                        options:
+                          collapse-after: 7
+    - repoURL: ghcr.io/lukasdietrich/glance-k8s/chart
+      chart: glance-k8s
+      targetRevision: v0.1.3
+  destination:
+    namespace: glance
+    server: https://kubernetes.default.svc
