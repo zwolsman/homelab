@@ -1,0 +1,106 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: postgres-provision-databases
+  namespace: postgres
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  backoffLimit: 5
+  ttlSecondsAfterFinished: 120
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: provisioner
+          image: postgres:17-alpine
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-admin
+                  key: postgres-password
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: user-passwords
+              mountPath: /secrets
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -euo pipefail
+
+              PGHOST="postgres-postgresql.postgres.svc.cluster.local"
+              PGPORT=5432
+              PGADMIN=postgres
+
+              run_psql() { PGPASSWORD="$POSTGRES_PASSWORD" psql -h "$PGHOST" -p "$PGPORT" -U "$PGADMIN" -v ON_ERROR_STOP=1 "$@"; }
+
+              echo "Waiting for PostgreSQL to become ready..."
+              until run_psql -c '\q' 2>/dev/null; do
+                echo "  not ready yet, retrying in 5s..."
+                sleep 5
+              done
+              echo "PostgreSQL is ready."
+
+              while IFS=' ' read -r db user _rest || [[ -n "${db:-}" ]]; do
+                [[ -z "${db:-}" || "$db" == \#* ]] && continue
+                if [[ -z "${user:-}" ]]; then
+                  echo "WARN: no username specified for database '$db', skipping"
+                  continue
+                fi
+
+                echo ">>> Provisioning db='$db' user='$user'"
+
+                # Create role if not exists
+                run_psql -c "DO \$\$ BEGIN
+                  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = '$user') THEN
+                    CREATE ROLE \"$user\" WITH LOGIN;
+                    RAISE NOTICE 'Created role: $user';
+                  END IF;
+                END \$\$;"
+
+                # Update password from mounted secret file
+                if [[ -f "/secrets/$user" ]]; then
+                  pw=$(cat "/secrets/$user")
+                  pw_esc="${pw//\'/\'\'}"
+                  run_psql -c "ALTER ROLE \"$user\" WITH ENCRYPTED PASSWORD '$pw_esc';"
+                  echo "  Password set for '$user'"
+                else
+                  echo "  WARN: no password secret at /secrets/$user — user created without password"
+                fi
+
+                # Create database if not exists
+                db_exists=$(run_psql -tAc "SELECT 1 FROM pg_database WHERE datname='$db'")
+                if [[ -z "$db_exists" ]]; then
+                  run_psql -c "CREATE DATABASE \"$db\" OWNER \"$user\";"
+                  echo "  Created database '$db'"
+                else
+                  run_psql -c "ALTER DATABASE \"$db\" OWNER TO \"$user\";"
+                  echo "  Database '$db' already exists, ensured owner"
+                fi
+
+                # Grant public schema access (required in PostgreSQL 15+)
+                run_psql -d "$db" -c "GRANT ALL ON SCHEMA public TO \"$user\";"
+
+                echo "  Done."
+              done < /config/databases
+
+              echo "Provisioning complete."
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 64Mi
+      volumes:
+        - name: config
+          configMap:
+            name: postgres-databases
+        - name: user-passwords
+          secret:
+            secretName: postgres-user-passwords
+            optional: true

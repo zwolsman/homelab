@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgres
+  namespace: argocd
+spec:
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+  source:
+    repoURL: registry-1.docker.io/bitnamicharts
+    chart: postgresql
+    targetRevision: 16.4.5
+    helm:
+      valuesObject:
+        global:
+          security:
+            allowInsecureImages: true
+        image:
+          repository: bitnamisecure/postgresql
+          tag: latest
+
+        architecture: standalone
+        auth:
+          existingSecret: postgres-admin
+          secretKeys:
+            adminPasswordKey: postgres-password
+        primary:
+          persistence:
+            enabled: true
+            storageClass: longhorn
+            size: 10Gi
+          resourcesPreset: small
+        metrics:
+          enabled: true
+          image:
+            repository: bitnamisecure/postgres-exporter
+            tag: latest
+          serviceMonitor:
+            enabled: true
+            additionalLabels:
+              release: prometheus
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: postgres
