@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: tailscale
   namespace: argocd
+  annotations:
+    glance/icon: di:tailscale
 spec:
   project: default
   syncPolicy:

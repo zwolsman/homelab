@@ -3,7 +3,6 @@ kind: Kustomization
 resources:
   - argocd
   - cloudflare
-  - docker-registry
   - echo
   - glance
   - longhorn

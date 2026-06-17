@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: cloudflare-tunnel
   namespace: argocd
+  annotations:
+    glance/icon: di:cloudflare
 spec:
   project: default
   syncPolicy:

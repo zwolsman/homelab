@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: glance
   namespace: argocd
+  annotations:
+    glance/icon: di:glance
 spec:
   project: default
   syncPolicy:
@@ -341,6 +343,21 @@ spec:
                             {{- $syncStatus := .String "status.sync.status" -}}
                             {{- $health     := .String "status.health.status" -}}
                             {{- $syncedAt   := .String "status.operationState.finishedAt" -}}
+                            {{- $icon       := .String "metadata.annotations.glance/icon" -}}
+                            {{- $iconUrl    := "" -}}
+                            {{- if and $icon (ge (len $icon) 3) -}}
+                              {{- if eq (slice $icon 0 3) "di:" -}}
+                                {{- $iconUrl = printf "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/%s.svg" (slice $icon 3) -}}
+                              {{- else if eq (slice $icon 0 3) "si:" -}}
+                                {{- $iconUrl = printf "https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/%s.svg" (slice $icon 3) -}}
+                              {{- else if eq (slice $icon 0 3) "sh:" -}}
+                                {{- $iconUrl = printf "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/%s.svg" (slice $icon 3) -}}
+                              {{- else if and (ge (len $icon) 4) (eq (slice $icon 0 4) "mdi:") -}}
+                                {{- $iconUrl = printf "https://cdn.jsdelivr.net/npm/@mdi/svg@latest/svg/%s.svg" (slice $icon 4) -}}
+                              {{- else -}}
+                                {{- $iconUrl = $icon -}}
+                              {{- end -}}
+                            {{- end -}}
                             {{- $healthColor := "color-subdue" -}}
                             {{- if eq $health "Healthy" -}}{{- $healthColor = "color-positive" -}}{{- end -}}
                             {{- if eq $health "Degraded" -}}{{- $healthColor = "color-negative" -}}{{- end -}}
@@ -349,18 +366,17 @@ spec:
                             {{- if eq $syncStatus "Synced" -}}{{- $syncColor = "color-positive" -}}{{- end -}}
                             {{- if eq $syncStatus "OutOfSync" -}}{{- $syncColor = "color-negative" -}}{{- end -}}
                             <li>
-                              <div class="flex items-center justify-between gap-10">
-                                <span class="size-h4 color-highlight text-truncate">{{ $name }}</span>
+                              <div class="flex items-center gap-10">
+                                {{ if $iconUrl }}<img class="docker-container-icon" src="{{ $iconUrl }}" loading="lazy">{{ end }}
+                                <div class="min-width-0 grow">
+                                  <span class="size-h4 color-highlight block text-truncate">{{ $name }}</span>
+                                </div>
                                 <span class="size-h5 {{ $healthColor }} shrink-0">{{ $health }}</span>
                               </div>
                               <ul class="list-horizontal-text size-h5 color-subdue">
                                 <li class="{{ $syncColor }}">{{ $syncStatus }}</li>
                                 {{ if and $version (ge (len $version) 7) }}<li title="{{ $version }}">{{ slice $version 0 7 }}</li>{{ end }}
-                                {{ if $syncedAt }}
-                                <li>
-                                  <span {{ $syncedAt | parseTime "RFC3339" | toRelativeTime }}></span>
-                                </li>
-                                {{ end }}
+                                {{ if $syncedAt }}<li><span {{ $syncedAt | parseTime "RFC3339" | toRelativeTime }}></span></li>{{ end }}
                               </ul>
                             </li>
                           {{- end -}}

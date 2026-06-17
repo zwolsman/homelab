@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: netbox
   namespace: argocd
+  annotations:
+    glance/icon: di:netbox
 spec:
   project: default
   syncPolicy:
