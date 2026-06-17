@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-databases
+  namespace: postgres
+data:
+  databases: | # app/db user
+    ptcgl-dev ptcgl
