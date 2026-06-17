@@ -1,0 +1,90 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ptcgl
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: >-
+      sync=ghcr.io/zwolsman/ptcgl-sync,
+      api=ghcr.io/zwolsman/ptcgl-api,
+      web=ghcr.io/zwolsman/ptcgl-web,
+      assets=ghcr.io/zwolsman/ptcgl-assets
+    argocd-image-updater.argoproj.io/sync.update-strategy: digest
+    argocd-image-updater.argoproj.io/sync.tag-override: latest
+    argocd-image-updater.argoproj.io/api.update-strategy: digest
+    argocd-image-updater.argoproj.io/api.tag-override: latest
+    argocd-image-updater.argoproj.io/web.update-strategy: digest
+    argocd-image-updater.argoproj.io/web.tag-override: latest
+    argocd-image-updater.argoproj.io/assets.update-strategy: digest
+    argocd-image-updater.argoproj.io/assets.tag-override: latest
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/zwolsman/ptcgl.dev
+    targetRevision: HEAD
+    path: infra
+    kustomize:
+      patches:
+        - target:
+            kind: ConfigMap
+            name: assets-config
+          patch: |-
+            - op: replace
+              path: /data/ASSET_S3_UPSTREAM
+              value: http://rustfs-svc.rustfs.svc.cluster.local:9000/ptcgl-dev/decoded
+        - target:
+            kind: ConfigMap
+            name: sync-config
+          patch: |-
+            - op: replace
+              path: /data/MIRROR_S3_REGION
+              value: eu-west-4
+            - op: replace
+              path: /data/MIRROR_S3_FORCE_PATH_STYLE
+              value: "true"
+            - op: replace
+              path: /data/SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres-postgresql.postgres.svc.cluster.local:5432/ptcgl-dev
+        - target:
+            kind: ConfigMap
+            name: api-config
+          patch: |-
+            - op: replace
+              path: /data/SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres-postgresql.postgres.svc.cluster.local:5432/ptcgl-dev
+            - op: replace
+              path: /data/MIRROR_API_ASSET_BASE_URL
+              value: https://ptcgl-assets.murfzw.nl/
+        - target:
+            kind: Secret
+            name: api-credentials
+          patch: |-
+            $patch: delete
+            apiVersion: v1
+            kind: Secret
+            metadata:
+              name: api-credentials
+        - target:
+            kind: Secret
+            name: sync-credentials
+          patch: |-
+            $patch: delete
+            apiVersion: v1
+            kind: Secret
+            metadata:
+              name: sync-credentials
+        - target:
+            kind: Secret
+            name: postgres-credentials
+          patch: |-
+            $patch: delete
+            apiVersion: v1
+            kind: Secret
+            metadata:
+              name: postgres-credentials
+  destination:
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
