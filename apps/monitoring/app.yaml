@@ -43,14 +43,14 @@ spec:
               - hosts:
                   - "prometheus"
           prometheusSpec:
-            retentionSize: 20GiB
+            retentionSize: 5GiB
             storageSpec:
               volumeClaimTemplate:
                 spec:
                   accessModes: ["ReadWriteOnce"]
                   resources:
                     requests:
-                      storage: 20Gi
+                      storage: 5Gi
   destination:
     namespace: monitoring
     server: https://kubernetes.default.svc

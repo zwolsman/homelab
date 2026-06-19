@@ -32,7 +32,7 @@ spec:
           existingSecret: rustfs-secret
         storageclass:
           name: longhorn
-          dataStorageSize: 20Gi
+          dataStorageSize: 30Gi
           logStorageSize: 1Gi
         service:
           type: ClusterIP
