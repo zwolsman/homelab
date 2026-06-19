@@ -34,6 +34,13 @@ spec:
               value: http://rustfs-svc.rustfs.svc.cluster.local:9000/ptcgl-dev/decoded
         - target:
             kind: ConfigMap
+            name: web-config
+          patch: |-
+            - op: replace
+              path: /data/API_BASE_URL
+              value: https://ptcgl-api.murfzw.nl
+        - target:
+            kind: ConfigMap
             name: sync-config
           patch: |-
             - op: replace
