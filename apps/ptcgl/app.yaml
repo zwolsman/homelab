@@ -38,7 +38,7 @@ spec:
           patch: |-
             - op: replace
               path: /data/API_BASE_URL
-              value: https://ptcgl-api.murfzw.nl
+              value: https://api.ptcgl.dev
         - target:
             kind: ConfigMap
             name: sync-config
@@ -61,7 +61,7 @@ spec:
               value: jdbc:postgresql://postgres-postgresql.postgres.svc.cluster.local:5432/ptcgl-dev
             - op: replace
               path: /data/MIRROR_API_ASSET_BASE_URL
-              value: https://ptcgl-assets.murfzw.nl/
+              value: https://assets.ptcgl.dev
         - target:
             kind: Secret
             name: api-credentials

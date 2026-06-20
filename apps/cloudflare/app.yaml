@@ -29,11 +29,11 @@ spec:
         ingress:
           - hostname: "murfzw.nl"
             service: http://echo-svc.echo.svc.cluster.local
-          - hostname: "ptcgl-api.murfzw.nl"
+          - hostname: "api.ptcgl.dev"
             service: http://ptcgl-api.ptcgl.svc.cluster.local:8080
-          - hostname: "ptcgl-assets.murfzw.nl"
+          - hostname: "assets.ptcgl.dev"
             service: http://ptcgl-assets.ptcgl.svc.cluster.local:8080
-          - hostname: "ptcgl.murfzw.nl"
+          - hostname: "ptcgl.dev"
             service: http://ptcgl-web.ptcgl.svc.cluster.local:3000
           - hostname: "*.murfzw.nl"
             service: http://echo-svc.echo.svc.cluster.local
