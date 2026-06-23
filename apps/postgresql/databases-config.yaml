@@ -6,3 +6,4 @@ metadata:
 data:
   databases: | # app/db user
     ptcgl-dev ptcgl
+    aviator-db aviator

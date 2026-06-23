@@ -23,3 +23,9 @@ spec:
           imageName: "ghcr.io/zwolsman/ptcgl-sync:latest"
           commonUpdateSettings:
             updateStrategy: digest
+    - namePattern: "aviator"
+      images:
+        - alias: "app"
+          imageName: "ghcr.io/zwolsman/go-aviator:latest"
+          commonUpdateSettings:
+            updateStrategy: digest
