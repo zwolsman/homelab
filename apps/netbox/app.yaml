@@ -15,7 +15,7 @@ spec:
   source:
     repoURL: https://charts.netbox.oss.netboxlabs.com/
     chart: netbox
-    targetRevision: 8.3.29
+    targetRevision: 8.3.30
     helm:
       valuesObject:
         replicaCount: 1
