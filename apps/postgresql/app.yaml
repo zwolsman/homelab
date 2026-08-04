@@ -15,7 +15,7 @@ spec:
   source:
     repoURL: registry-1.docker.io/bitnamicharts
     chart: postgresql
-    targetRevision: 18.8.5
+    targetRevision: 18.8.6
     helm:
       valuesObject:
         global:
