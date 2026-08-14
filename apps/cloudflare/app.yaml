@@ -15,7 +15,7 @@ spec:
   source:
     repoURL: https://community-charts.github.io/helm-charts
     chart: cloudflared
-    targetRevision: 2.2.14
+    targetRevision: 2.2.15
     helm:
       valuesObject:
         tunnelConfig:
