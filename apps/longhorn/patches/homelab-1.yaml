@@ -4,6 +4,8 @@ metadata:
   name: homelab-1
   namespace: longhorn-system
 spec:
+  tags:
+    - ssd
   disks:
     default-disk-080400000000:
       tags:

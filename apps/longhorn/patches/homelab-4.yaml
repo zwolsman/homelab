@@ -4,6 +4,8 @@ metadata:
   name: homelab-4
   namespace: longhorn-system
 spec:
+  tags:
+    - hdd
   disks:
     default-disk-080400000000:
       tags:
