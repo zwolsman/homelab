@@ -4,14 +4,15 @@ resources:
   - argocd
   - aviator
   - cloudflare
+  - coder
   - echo
   - glance
   - longhorn
   - metric-server
   - monitoring
   - netbox
-  - ptcgl
   - postgresql
+  - ptcgl
   - rustfs
   - sealed-secrets
   - tailscale
