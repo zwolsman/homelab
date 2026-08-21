@@ -1,3 +1,5 @@
 machine:
   install:
     disk: /dev/sda
+  nodeLabels:
+    disktype: ssd

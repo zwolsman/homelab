@@ -1,3 +1,5 @@
 machine:
   install:
     disk: /dev/sdb
+  nodeLabels:
+    disktype: ssd
