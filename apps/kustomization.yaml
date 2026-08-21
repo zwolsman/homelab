@@ -10,7 +10,6 @@ resources:
   - longhorn
   - metric-server
   - monitoring
-  - netbox
   - postgresql
   - ptcgl
   - rustfs
