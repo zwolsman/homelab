@@ -1,0 +1,10 @@
+apiVersion: longhorn.io/v1beta2
+kind: Node
+metadata:
+  name: homelab-2
+  namespace: longhorn-system
+spec:
+  disks:
+    default-disk-080400000000:
+      tags:
+        - ssd

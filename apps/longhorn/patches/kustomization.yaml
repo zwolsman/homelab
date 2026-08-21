@@ -1,6 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - app.yaml
-  - fs-trim.yaml
-  - storage-classes.yaml
+  - homelab-1.yaml
+  - homelab-2.yaml
+  - homelab-3.yaml

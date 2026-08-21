@@ -12,29 +12,33 @@ spec:
       prune: true
     syncOptions:
       - CreateNamespace=true
+      - ServerSideApply=true
     managedNamespaceMetadata:
       labels:
         pod-security.kubernetes.io/enforce: privileged
         pod-security.kubernetes.io/audit: privileged
         pod-security.kubernetes.io/warn: privileged
-  source:
-    repoURL: https://charts.longhorn.io
-    chart: longhorn
-    targetRevision: 1.12.1
-    helm:
-      valuesObject:
-        defaultSettings:
-          defaultDataPath: /var/lib/longhorn
-        ingress:
-          enabled: true
-          host: longhorn
-          ingressClassName: tailscale
-          tls: true
-        metrics:
-          serviceMonitor:
+  sources:
+    - repoURL: https://charts.longhorn.io
+      chart: longhorn
+      targetRevision: 1.12.1
+      helm:
+        valuesObject:
+          defaultSettings:
+            defaultDataPath: /var/lib/longhorn
+          ingress:
             enabled: true
-            additionalLabels:
-              release: prometheus
+            host: longhorn
+            ingressClassName: tailscale
+            tls: true
+          metrics:
+            serviceMonitor:
+              enabled: true
+              additionalLabels:
+                release: prometheus
+    - repoURL: https://github.com/zwolsman/homelab
+      path: apps/longhorn/patches
+      targetRevision: main
   destination:
     namespace: longhorn-system
     server: https://kubernetes.default.svc
