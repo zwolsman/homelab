@@ -1,0 +1,8 @@
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: longhorn
+provisioning:
+  diskSelector:
+    match: disk.wwid == "naa.50014ee204227e9f"
+  minSize: 1.8TB
+  maxSize: 2TB

@@ -1,0 +1,16 @@
+apiVersion: longhorn.io/v1beta2
+kind: Node
+metadata:
+  name: homelab-4
+  namespace: longhorn-system
+spec:
+  disks:
+    default-disk-080400000000:
+      tags:
+        - hdd
+    data-disk:
+      allowScheduling: true
+      diskType: filesystem
+      path: /var/mnt/longhorn
+      tags:
+        - hdd

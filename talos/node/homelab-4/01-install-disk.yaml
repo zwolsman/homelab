@@ -1,3 +1,5 @@
 machine:
   install:
-    disk: /dev/sdc
+    disk: /dev/sda
+  nodeLabels:
+    disktype: hdd
