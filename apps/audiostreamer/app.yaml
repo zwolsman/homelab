@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: audiosteamer
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: >-
+      api=ghcr.io/zwolsman/audiosteamer-api
+    argocd-image-updater.argoproj.io/api.update-strategy: digest
+    argocd-image-updater.argoproj.io/api.tag-override: latest
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/zwolsman/audio-streamer
+    targetRevision: HEAD
+    path: web/infra
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: audiosteamer
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
