@@ -8,3 +8,4 @@ data:
     ptcgl-dev ptcgl
     aviator-db aviator
     coder-db coder
+    audio-api audio-streamer
