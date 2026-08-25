@@ -4,8 +4,8 @@ metadata:
   name: postgres-databases
   namespace: postgres
 data:
-  databases: | # app/db user
+  databases: | # db -> user
     ptcgl-dev ptcgl
     aviator-db aviator
     coder-db coder
-    audio-api audio-streamer
+    audio-streamer audio-api
