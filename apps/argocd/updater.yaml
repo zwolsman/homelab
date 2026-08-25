@@ -29,3 +29,9 @@ spec:
           imageName: "ghcr.io/zwolsman/go-aviator:latest"
           commonUpdateSettings:
             updateStrategy: digest
+    - namePattern: "audiostreamer"
+      images:
+        - alias: "api"
+          imageName: "ghcr.io/zwolsman/audiosteamer-api:latest"
+          commonUpdateSettings:
+            updateStrategy: digest
