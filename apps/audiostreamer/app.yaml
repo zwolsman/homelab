@@ -14,6 +14,15 @@ spec:
     repoURL: git@github.com:zwolsman/audio-streamer.git
     targetRevision: HEAD
     path: web/infra
+    kustomize:
+      patches:
+        - target:
+            kind: Deployment
+            name: api
+          patch: |-
+            - op: add
+              path: /spec/template/spec/imagePullSecrets
+              value: [{ name: ghcr-secret }]
   destination:
     server: https://kubernetes.default.svc
     namespace: audiosteamer
