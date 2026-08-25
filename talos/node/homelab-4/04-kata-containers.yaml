@@ -1,0 +1,8 @@
+machine:
+  install:
+    extensions:
+      - image: ghcr.io/siderolabs/kata-containers:3.32.0
+  kernel:
+    modules:
+      - name: vhost_net
+      - name: vhost_vsock
