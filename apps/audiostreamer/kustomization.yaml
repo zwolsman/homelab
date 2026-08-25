@@ -3,3 +3,10 @@ kind: Kustomization
 resources:
   - app.yaml
   - sealed_secret.yaml
+patches:
+  - target:
+      kind: Deployment
+    patch: |-
+      - op: add
+        path: /spec/template/spec/imagePullSecrets
+        value: [{ name: ghcr-secret }]
