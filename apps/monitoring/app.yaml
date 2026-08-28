@@ -13,6 +13,10 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+    managedNamespaceMetadata:
+      labels:
+        pod-security.kubernetes.io/enforce: privileged
+        pod-security.kubernetes.io/enforce-version: latest
   source:
     repoURL: https://prometheus-community.github.io/helm-charts
     chart: kube-prometheus-stack
@@ -29,12 +33,18 @@ spec:
           persistence:
             enabled: true
             type: sts
-            storageClassName: ""
+            storageClassName: "longhorn-hdd"
             accessModes:
               - ReadWriteOnce
             size: 5Gi
         nodeExporter:
-          enabled: false # TODO: fix for talos
+          enabled: true
+        prometheus-node-exporter:
+          hostRootFsMount:
+            enabled: false
+          tolerations:
+            - operator: Exists
+              effect: NoSchedule
         prometheus:
           ingress:
             enabled: true
@@ -43,14 +53,16 @@ spec:
               - hosts:
                   - "prometheus"
           prometheusSpec:
-            retentionSize: 5GiB
+            retention: 30d
+            retentionSize: 50GiB
             storageSpec:
               volumeClaimTemplate:
                 spec:
+                  storageClassName: "longhorn-hdd"
                   accessModes: ["ReadWriteOnce"]
                   resources:
                     requests:
-                      storage: 5Gi
+                      storage: 75Gi
   destination:
     namespace: monitoring
     server: https://kubernetes.default.svc
