@@ -12,6 +12,10 @@ spec:
       prune: true
     syncOptions:
       - CreateNamespace=true
+    managedNamespaceMetadata:
+      labels:
+        pod-security.kubernetes.io/enforce: privileged
+        pod-security.kubernetes.io/enforce-version: latest
   source:
     repoURL: https://helm.coder.com/v2
     chart: coder
