@@ -1,0 +1,6 @@
+machine:
+  network:
+    interfaces:
+      - deviceSelector:
+          hardwareAddr: "c4:62:37:0b:c0:5c"
+        dhcp: false

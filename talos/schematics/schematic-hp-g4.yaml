@@ -1,0 +1,7 @@
+customization:
+  systemExtensions:
+    officialExtensions:
+      - siderolabs/iscsi-tools
+      - siderolabs/kata-containers
+      - siderolabs/realtek-firmware
+      - siderolabs/util-linux-tools

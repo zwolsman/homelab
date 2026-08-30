@@ -26,4 +26,4 @@ nodes:
   - host: homelab-4
     ip: 192.168.1.124
     role: worker
-    schematicId: "@schematics/schematic-kata.yaml"
+    schematicId: "@schematics/schematic-hp-g4.yaml"
