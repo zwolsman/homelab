@@ -17,3 +17,4 @@ resources:
   - rustfs
   - sealed-secrets
   - tailscale
+  - https://raw.githubusercontent.com/k8snetworkplumbingwg/multus-cni/master/deployments/multus-daemonset-thick.yml
