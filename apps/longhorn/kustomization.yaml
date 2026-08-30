@@ -4,3 +4,4 @@ resources:
   - app.yaml
   - fs-trim.yaml
   - storage-classes.yaml
+  - storage-net.yaml

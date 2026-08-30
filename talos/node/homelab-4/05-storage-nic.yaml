@@ -4,3 +4,9 @@ machine:
       - deviceSelector:
           hardwareAddr: "c4:62:37:0b:c0:5c"
         dhcp: false
+---
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: storage0
+selector:
+  match: mac(link.permanent_addr) == "c4:62:37:0b:c0:5c"
