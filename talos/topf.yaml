@@ -11,6 +11,10 @@ schematicId: "@schematics/schematic.yaml"
 secretsPath: secrets.enc.yaml
 
 nodes:
+  - host: hl-cp-01
+    ip: 192.168.1.195
+    role: control-plane
+    schematicId: "@schematics/schematic-aoostar-gem12+.yaml"
   - host: homelab-1
     ip: 192.168.1.150
     role: control-plane

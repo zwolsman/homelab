@@ -1,0 +1,6 @@
+customization:
+  systemExtensions:
+    officialExtensions:
+      - siderolabs/iscsi-tools
+      - siderolabs/kata-containers
+      - siderolabs/util-linux-tools

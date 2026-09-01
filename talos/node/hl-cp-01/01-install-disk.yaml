@@ -1,0 +1,5 @@
+machine:
+  install:
+    disk: /dev/disk/by-id/nvme-WD_PC_SN810_SDCPNRY-256G-1006_2329BK440808
+  nodeLabels:
+    disktype: ssd

@@ -1,0 +1,12 @@
+machine:
+  network:
+    interfaces:
+      - deviceSelector:
+          hardwareAddr: "c8:ff:bf:0d:6a:57"
+        dhcp: false
+---
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: storage0
+selector:
+  match: mac(link.permanent_addr) == "c8:ff:bf:0d:6a:57"
