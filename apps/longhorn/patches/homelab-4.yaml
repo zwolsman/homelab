@@ -18,7 +18,7 @@ spec:
       path: /var/mnt/hdd1
       tags:
         - hdd
-    hdd2:
+    data-disk:
       allowScheduling: true
       storageReserved: 0
       diskType: filesystem
