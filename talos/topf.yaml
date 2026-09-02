@@ -19,14 +19,6 @@ nodes:
     ip: 192.168.1.150
     role: control-plane
     schematicId: "@schematics/schematic-mini-pc.yaml"
-  - host: homelab-2
-    ip: 192.168.1.151
-    role: control-plane
-    schematicId: "@schematics/schematic-mini-pc.yaml"
-  - host: homelab-3
-    ip: 192.168.1.152
-    role: control-plane
-    schematicId: "@schematics/schematic-mini-pc.yaml"
   - host: homelab-4
     ip: 192.168.1.124
     role: worker
