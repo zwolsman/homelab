@@ -20,7 +20,8 @@ spec:
       tags:
         - hdd
     data-disk:
-      allowScheduling: true
+      allowScheduling: false
+      evictionRequested: true
       storageReserved: 0
       diskType: filesystem
       path: /var/mnt/longhorn
