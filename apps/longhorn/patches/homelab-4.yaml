@@ -10,7 +10,7 @@ spec:
     default-disk-080400000000:
       allowScheduling: false
       tags:
-        - hdd
+        - ssd
     hdd1:
       allowScheduling: true
       storageReserved: 0
