@@ -1,5 +1,3 @@
 machine:
   install:
-    disk: /dev/sda
-  nodeLabels:
-    disktype: hdd
+    disk: /dev/disk/by-id/nvme-KINGSTON_RBUSNS8154P3256GJ1_50026B7684BFD277

@@ -31,3 +31,11 @@ nodes:
     ip: 192.168.1.124
     role: worker
     schematicId: "@schematics/schematic-hp-g4.yaml"
+    data:
+      diskVolumes:
+        - name: hdd1
+          wwid: "naa.50014ee2597784dc"
+        - name: hdd2
+          wwid: "naa.50014ee204227e9f"
+        - name: nvme1
+          wwid: "eui.002538869104a451"
