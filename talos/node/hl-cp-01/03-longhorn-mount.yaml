@@ -1,0 +1,10 @@
+machine:
+  kubelet:
+    extraMounts:
+      - destination: /var/mnt/nvme1
+        type: bind
+        source: /var/mnt/nvme1
+        options:
+          - bind
+          - rshared
+          - rw

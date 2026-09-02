@@ -6,6 +6,7 @@ metadata:
 spec:
   tags:
     - hdd
+    - ssd
   disks:
     default-disk-080400000000:
       allowScheduling: false

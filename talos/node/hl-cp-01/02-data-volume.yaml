@@ -1,0 +1,9 @@
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: nvme1
+provisioning:
+  diskSelector:
+    match: disk.wwid == "eui.0025388981b39f22"
+  minSize: 0
+  grow: true
+---

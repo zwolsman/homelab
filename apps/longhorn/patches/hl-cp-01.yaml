@@ -12,4 +12,10 @@ spec:
       storageReserved: 0
       tags:
         - ssd
-
+    nvme1:
+      allowScheduling: true
+      storageReserved: 0
+      diskType: filesystem
+      path: /var/mnt/nvme1
+      tags:
+        - ssd
