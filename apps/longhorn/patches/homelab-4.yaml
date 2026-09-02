@@ -23,7 +23,7 @@ spec:
       allowScheduling: true
       storageReserved: 0
       diskType: filesystem
-      path: /var/mnt/hdd2
+      path: /var/mnt/longhorn
       tags:
         - hdd
     nvme1:
