@@ -3,6 +3,4 @@ kind: Kustomization
 resources:
   - hl-cp-01.yaml
   - homelab-1.yaml
-  - homelab-2.yaml
-  - homelab-3.yaml
   - homelab-4.yaml
