@@ -8,12 +8,27 @@ spec:
     - hdd
   disks:
     default-disk-080400000000:
+      allowScheduling: false
       tags:
         - hdd
-    data-disk:
+    hdd1:
       allowScheduling: true
       storageReserved: 0
       diskType: filesystem
-      path: /var/mnt/longhorn
+      path: /var/mnt/hdd1
       tags:
         - hdd
+    hdd2:
+      allowScheduling: true
+      storageReserved: 0
+      diskType: filesystem
+      path: /var/mnt/hdd2
+      tags:
+        - hdd
+    nvme1:
+      allowScheduling: true
+      storageReserved: 0
+      diskType: filesystem
+      path: /var/mnt/nvme1
+      tags:
+        - ssd
