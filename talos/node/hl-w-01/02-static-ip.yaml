@@ -1,0 +1,7 @@
+#apiVersion: v1alpha1
+#kind: LinkConfig
+#name: eno1
+#addresses:
+#  - address: 192.168.1.20/24
+#routes:
+#  - gateway: 192.168.1.1

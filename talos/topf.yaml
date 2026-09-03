@@ -25,8 +25,8 @@ nodes:
     schematicId: "@schematics/schematic-mini-pc.yaml"
     data:
       diskVolumes: [ ]
-  - host: homelab-4
-    ip: 192.168.1.20
+  - host: hl-w-01
+    ip: 192.168.1.124
     role: worker
     schematicId: "@schematics/schematic-hp-g4.yaml"
     data:
