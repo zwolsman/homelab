@@ -15,10 +15,16 @@ nodes:
     ip: 192.168.1.195
     role: control-plane
     schematicId: "@schematics/schematic-aoostar-gem12+.yaml"
+    data:
+      diskVolumes:
+        - name: nvme1
+          wwid: "eui.0025388981b39f22"
   - host: homelab-1
     ip: 192.168.1.150
     role: control-plane
     schematicId: "@schematics/schematic-mini-pc.yaml"
+    data:
+      diskVolumes: [ ]
   - host: homelab-4
     ip: 192.168.1.124
     role: worker
