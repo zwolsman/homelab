@@ -33,6 +33,20 @@ talos/
     └── schematic-mini-pc.yaml                  # HP Mini PC schematic
 ```
 
+## IP Address planning for cluster
+
+|IPv4|Usage|
+|-|-|
+|192.168.1.1|Gateway|
+|192.168.1.2|DNS server|
+|192.168.1.10|Control plane node 1|
+|192.168.1.11|Control plane node 2|
+|192.168.1.12|Control plane node 3|
+|192.168.1.20|Worker node 1|
+|192.168.1.21|Worker node 2|
+|192.168.1.22|Worker node 3|
+|192.168.1.100|Virtual IP for API server|
+
 ## Getting Started
 
 ### 1. Allow direnv

@@ -12,7 +12,7 @@ secretsPath: secrets.enc.yaml
 
 nodes:
   - host: hl-cp-01
-    ip: 192.168.1.195
+    ip: 192.168.1.10
     role: control-plane
     schematicId: "@schematics/schematic-aoostar-gem12+.yaml"
     data:
@@ -26,7 +26,7 @@ nodes:
     data:
       diskVolumes: [ ]
   - host: homelab-4
-    ip: 192.168.1.124
+    ip: 192.168.1.20
     role: worker
     schematicId: "@schematics/schematic-hp-g4.yaml"
     data:
