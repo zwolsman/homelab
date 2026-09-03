@@ -1,14 +1,14 @@
 apiVersion: longhorn.io/v1beta2
 kind: Node
 metadata:
-  name: homelab-4
+  name: hl-w-01
   namespace: longhorn-system
 spec:
   tags:
     - hdd
     - ssd
   disks:
-    default-disk-080400000000:
+    default-disk-1030600000000:
       allowScheduling: false
       tags:
         - ssd
