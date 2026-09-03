@@ -26,7 +26,7 @@ nodes:
     data:
       diskVolumes:
         - name: hdd1
-          wwid: "naa.50014ee2597784dc"
+          wwid: "naa.5000c500663b382a"
         - name: hdd2
           wwid: "naa.50014ee204227e9f"
         - name: nvme1

@@ -19,12 +19,11 @@ spec:
       path: /var/mnt/hdd1
       tags:
         - hdd
-    data-disk:
-      allowScheduling: false
-      evictionRequested: true
+    hdd2:
+      allowScheduling: true
       storageReserved: 0
       diskType: filesystem
-      path: /var/mnt/longhorn
+      path: /var/mnt/hdd2
       tags:
         - hdd
     nvme1:
