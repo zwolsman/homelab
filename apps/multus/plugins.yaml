@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: install-cni-plugins
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      name: install-cni-plugins
+  template:
+    metadata:
+      labels:
+        name: install-cni-plugins
+    spec:
+      tolerations:
+        - operator: Exists
+      initContainers:
+        - name: install-cni
+          image: ghcr.io/siderolabs/install-cni:v1.5.0
+          command: ["/install-cni.sh"]
+          volumeMounts:
+            - name: cni-plugin
+              mountPath: /host/opt/cni/bin/
+      containers:
+        - name: pause
+          image: registry.k8s.io/pause:3.9
+      volumes:
+        - name: cni-plugin
+          hostPath:
+            path: /opt/cni/bin

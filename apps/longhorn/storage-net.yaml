@@ -1,21 +1,31 @@
 apiVersion: k8s.cni.cncf.io/v1
 kind: NetworkAttachmentDefinition
 metadata:
-  name: longhorn-storage-net
-  namespace: longhorn-system
+  name: storage-net
+  namespace: kube-system
 spec:
   config: '{
-      "cniVersion": "1.0.0",
-      "type": "macvlan",
-      "master": "storage0",
-      "mode": "bridge",
-      "ipam": {
-        "type": "host-local",
-        "subnet": "192.168.10.0/24",
-        "rangeStart": "192.168.10.10",
-        "rangeEnd": "192.168.10.250",
-        "routes": [
-          { "dst": "192.168.10.0/24" }
-        ]
+    "cniVersion": "0.3.1",
+    "plugins": [
+      {
+        "type": "macvlan",
+        "capabilities": {
+          "ips": true
+        },
+        "master": "enp3s0",
+        "mode": "bridge",
+        "ipam": {
+          "type": "host-local",
+          "subnet": "192.168.10.0/24",
+          "rangeStart": "192.168.10.10",
+          "rangeEnd": "192.168.10.250"
+        }
+      },
+      {
+        "type": "tuning",
+        "capabilities": {
+          "mac": true
+        }
       }
-    }'
+    ]
+  }'

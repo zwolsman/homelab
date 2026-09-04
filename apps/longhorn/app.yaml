@@ -26,6 +26,7 @@ spec:
         valuesObject:
           defaultSettings:
             defaultDataPath: /var/lib/longhorn
+            storageNetwork: kube-system/storage-net
           ingress:
             enabled: true
             host: longhorn
