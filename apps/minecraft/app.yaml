@@ -1,0 +1,58 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: minecraft
+  namespace: argocd
+  annotations:
+    glance/icon: di:minecraft
+spec:
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+  sources:
+    - repoURL: https://itzg.github.io/minecraft-server-charts
+      chart: minecraft
+      targetRevision: 5.2.0
+      helm:
+        valuesObject:
+          nodeSelector:
+            kubernetes.io/hostname: hl-cp-01
+          resources:
+            requests:
+              memory: 8Gi
+              cpu: 2
+            limits:
+              memory: 12Gi
+              cpu: 4
+          minecraftServer:
+            eula: true
+            type: "FORGE"
+            version: "1.20.1"
+            whitelist: murfzw
+            memory: 8g
+          persistence:
+            storageClass: "longhorn-ssd"
+            dataDir:
+              enabled: true
+              Size: 5Gi
+    - repoURL: https://lucasdpt.github.io/frpc-helm-chart
+      chart: frpc
+      targetRevision: 1.0.1
+      helm:
+        valuesObject:
+          frpc:
+            existingSecret: "frpc"
+            serverAddr: "eu4.joell.dev"
+            serverPort: 6969
+            proxies:
+              - name: minecraft
+                type: tcp
+                localIP: 10.104.41.59
+                localPort: 25565
+                remotePort: 25565
+  destination:
+    namespace: minecraft
+    server: https://kubernetes.default.svc

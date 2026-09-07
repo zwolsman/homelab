@@ -11,6 +11,7 @@ resources:
   - kata-runtime-class.yaml
   - longhorn
   - metric-server
+  - minecraft
   - monitoring
   - multus
   - postgresql
