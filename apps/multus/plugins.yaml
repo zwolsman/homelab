@@ -16,7 +16,7 @@ spec:
         - operator: Exists
       initContainers:
         - name: install-cni
-          image: ghcr.io/siderolabs/install-cni:v1.5.0
+          image: ghcr.io/siderolabs/install-cni:v1.9.0@sha256:53bdeb6c8d238dd593ee75f265baf4625925a034d8d18f10ffeae88d7fcf2c3e
           command: ["/install-cni.sh"]
           volumeMounts:
             - name: cni-plugin
