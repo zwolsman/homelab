@@ -16,7 +16,7 @@ spec:
       path: infra/base
     - repoURL: https://lucasdpt.github.io/frpc-helm-chart
       chart: frpc
-      targetRevision: 1.0.1
+      targetRevision: 1.0.2
       helm:
         valuesObject:
           frpc:
