@@ -16,7 +16,7 @@ spec:
     repoURL: https://github.com/rustfs/rustfs
     path: helm/rustfs
     # renovate: datasource=github-releases packageName=rustfs/rustfs
-    targetRevision: 1.0.0-beta.7
+    targetRevision: 1.0.1
     helm:
       valuesObject:
         replicaCount: 1
